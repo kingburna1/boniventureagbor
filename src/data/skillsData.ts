@@ -1,0 +1,77 @@
+import { SkillCategory } from '@/types/skill';
+
+export const SKILLS_DATA: SkillCategory[] = [
+  {
+    id: 'frontend',
+    title: 'Frontend & UI Engineering',
+    description: 'Developing reactive, high-performance web applications with Next.js, React, and modern CSS frameworks.',
+    skills: [
+      { name: 'Next.js (App Router)', level: 'Core' },
+      { name: 'React 18 / 19', level: 'Core' },
+      { name: 'TypeScript', level: 'Core' },
+      { name: 'JavaScript (ES6+)', level: 'Core' },
+      { name: 'Tailwind CSS (v3 / v4)', level: 'Core' },
+      { name: 'Framer Motion', level: 'Core' },
+      { name: 'Zustand State Management', level: 'Hands-on' },
+      { name: 'HTML5 & CSS3', level: 'Core' },
+    ],
+  },
+  {
+    id: 'backend',
+    title: 'Backend & Database Architecture',
+    description: 'Designing modular API services, authentication layers, and relational/document databases.',
+    skills: [
+      { name: 'Node.js & Express.js', level: 'Core' },
+      { name: 'NestJS Architecture', level: 'Hands-on' },
+      { name: 'PostgreSQL & SQL', level: 'Core' },
+      { name: 'Prisma ORM', level: 'Core' },
+      { name: 'MongoDB & Atlas', level: 'Core' },
+      { name: 'REST & WebSockets APIs', level: 'Core' },
+      { name: 'Auth (Refresh Tokens / Sessions)', level: 'Core' },
+      { name: 'Python (FastAPI & Django)', level: 'Hands-on' },
+    ],
+  },
+  {
+    id: 'devops',
+    title: 'DevOps, Cloud & Security',
+    description: 'Orchestrating CI/CD pipelines, containerization, and static/dynamic security scanning.',
+    skills: [
+      { name: 'Git, GitHub & GitLab', level: 'Core' },
+      { name: 'GitLab CI/CD Pipelines', level: 'Core' },
+      { name: 'Docker & Containers', level: 'Hands-on' },
+      { name: 'Security (SAST, Semgrep, ZAP)', level: 'Hands-on' },
+      { name: 'Vercel & Render Hosting', level: 'Hands-on' },
+      { name: 'Cloudflare R2 & AWS S3', level: 'Hands-on' },
+      { name: 'Google Cloud & Azure', level: 'Hands-on' },
+      { name: 'Kubernetes & Terraform', level: 'Explored' },
+    ],
+  },
+  {
+    id: 'ai_ml',
+    title: 'AI / ML & Computer Vision',
+    description: 'Building machine learning pipelines, pose detection models, and AI service integrations.',
+    skills: [
+      { name: 'Python (NumPy, Pandas)', level: 'Hands-on' },
+      { name: 'OpenCV & MediaPipe', level: 'Hands-on' },
+      { name: 'PyTorch & TensorFlow Lite', level: 'Hands-on' },
+      { name: 'YOLO, OpenPose & MMPose', level: 'Hands-on' },
+      { name: 'ONNX & ONNX Runtime', level: 'Hands-on' },
+      { name: 'Transformers & Whisper', level: 'Hands-on' },
+      { name: 'OpenAI & Gemini APIs', level: 'Hands-on' },
+      { name: 'scikit-learn', level: 'Hands-on' },
+    ],
+  },
+  {
+    id: 'mobile_integrations',
+    title: 'Mobile, Payments & APIs',
+    description: 'Cross-platform mobile development, payment gateway integrations, and communication APIs.',
+    skills: [
+      { name: 'Flutter & Dart', level: 'Hands-on' },
+      { name: 'React Native & Expo', level: 'Hands-on' },
+      { name: 'CinetPay & MTN MoMo API', level: 'Hands-on' },
+      { name: 'SendGrid, Brevo & Twilio', level: 'Hands-on' },
+      { name: 'Firebase & Google APIs', level: 'Hands-on' },
+      { name: 'ElevenLabs & Speech APIs', level: 'Hands-on' },
+    ],
+  },
+];

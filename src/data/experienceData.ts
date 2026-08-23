@@ -1,0 +1,75 @@
+import { ExperienceItem } from '@/types/experience';
+
+export const EXPERIENCE_DATA: ExperienceItem[] = [
+  {
+    id: 'exp-1',
+    company: 'Apex Tech Solutions',
+    role: 'Lead Full-Stack Engineer & UX Architect',
+    period: '2023 — Present',
+    location: 'San Francisco, CA (Remote)',
+    description: 'Leading a cross-functional team of 8 engineers and designers building enterprise SaaS applications, real-time analytics platforms, and design systems.',
+    highlights: [
+      'Architected Next.js micro-frontend platform reducing initial page load times by 45%',
+      'Designed and established company-wide WCAG 2.1 AAA accessibility standards',
+      'Mentored senior and junior developers on modern TypeScript and React patterns',
+    ],
+    skills: ['Next.js', 'TypeScript', 'Tailwind CSS', 'GraphQL', 'AWS', 'Design Systems'],
+    isCurrent: true,
+  },
+  {
+    id: 'exp-2',
+    company: 'Vanguard Digital Lab',
+    role: 'Senior Frontend & Systems Engineer',
+    period: '2021 — 2023',
+    location: 'New York, NY (Remote)',
+    description: 'Engineered high-frequency fintech analytics dashboards, real-time WebSockets streaming services, and multi-brand design tokens.',
+    highlights: [
+      'Spearheaded transition from legacy Webpack monolith to Next.js App Router',
+      'Improved Core Web Vitals across 6 key product lines to green 95+ scores',
+      'Integrated WebSockets streaming layer handling 100k data updates per minute',
+    ],
+    skills: ['React', 'TypeScript', 'Tailwind CSS', 'Redux Toolkit', 'WebSockets', 'Jest'],
+  },
+  {
+    id: 'exp-3',
+    company: 'Cortex Core AI Systems',
+    role: 'Full-Stack AI & API Architect',
+    period: '2020 — 2021',
+    location: 'Austin, TX',
+    description: 'Designed and deployed computer vision pipelines, multi-agent LLM workflows, and secure REST/GraphQL API services.',
+    highlights: [
+      'Built automated CI/CD security scanning pipeline with GitLab CI, Semgrep & OWASP ZAP',
+      'Integrated OpenCV & MediaPipe pose detection models with 60fps web canvas rendering',
+      'Implemented refresh token rotation and session revocation backend auth architecture',
+    ],
+    skills: ['Python', 'FastAPI', 'Node.js', 'PyTorch', 'OpenCV', 'Docker', 'GitLab CI'],
+  },
+  {
+    id: 'exp-4',
+    company: 'Novus Product Studio',
+    role: 'Full-Stack Developer & Product Designer',
+    period: '2019 — 2020',
+    location: 'Remote',
+    description: 'Designed and built custom web applications, MVP prototypes, and responsive branding systems for venture-backed startups.',
+    highlights: [
+      'Delivered 12 complete digital products from Figma wireframes to production deployment',
+      'Increased mobile user conversion by an average of 28% through UX optimization',
+      'Implemented PostgreSQL & Prisma database schemas with zero-downtime migrations',
+    ],
+    skills: ['Figma', 'React', 'Node.js', 'PostgreSQL', 'Prisma', 'Tailwind CSS'],
+  },
+  {
+    id: 'exp-5',
+    company: 'Aura Digital Innovation',
+    role: 'UI/UX Engineer & Integration Specialist',
+    period: '2018 — 2019',
+    location: 'Douala, Cameroon',
+    description: 'Developed responsive client web platforms, payment gateway integrations (CinetPay, MTN MoMo), and cross-platform mobile apps.',
+    highlights: [
+      'Integrated African mobile money payment APIs handling 50k+ monthly transactions',
+      'Built cross-platform mobile prototypes using Flutter & React Native Expo',
+      'Optimized backend PostgreSQL queries reducing endpoint response times by 35%',
+    ],
+    skills: ['JavaScript', 'Flutter', 'React Native', 'PostgreSQL', 'CinetPay', 'MTN MoMo'],
+  },
+];
