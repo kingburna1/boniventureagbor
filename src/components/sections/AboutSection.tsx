@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Lightbulb, ShieldCheck, Layers } from 'lucide-react';
 import { PERSONAL_DATA } from '@/data/personalData';

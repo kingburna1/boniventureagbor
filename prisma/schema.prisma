@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model PersonalProfile {
+  id            String   @id @default(uuid())
+  name          String
+  title         String
+  bio           String   @db.Text
+  avatarUrl     String
+  availability  String
+  location      String
+  email         String
+  resumeUrl     String   @default("#")
+  leadParagraph String   @db.Text
+  bodyParagraph String   @db.Text
+  highlights    String[]
+  githubUrl     String   @default("https://github.com")
+  linkedinUrl   String   @default("https://linkedin.com")
+  twitterUrl    String   @default("https://twitter.com")
+  figmaUrl      String   @default("https://figma.com")
+  updatedAt     DateTime @updatedAt
+}
+
+model Stat {
+  id        String   @id @default(uuid())
+  label     String
+  value     String
+  order     Int      @default(0)
+  updatedAt DateTime @updatedAt
+}
+
+model Philosophy {
+  id          String   @id @default(uuid())
+  title       String
+  description String   @db.Text
+  order       Int      @default(0)
+  updatedAt   DateTime @updatedAt
+}
+
+model Project {
+  id           String     @id
+  slug         String     @unique
+  title        String
+  tagline      String
+  category     String
+  imageUrl     String
+  impactMetric String
+  tags         String[]
+  demoUrl      String?
+  githubUrl    String?
+  featured     Boolean    @default(true)
+  order        Int        @default(0)
+  caseStudy    CaseStudy?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model CaseStudy {
+  id           String   @id @default(uuid())
+  projectId    String   @unique
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  overview     String   @db.Text
+  problem      String   @db.Text
+  solution     String   @db.Text
+  architecture String[]
+  keyResults   String[]
+  technologies String[]
+  liveUrl      String?
+  githubUrl    String?
+  updatedAt    DateTime @updatedAt
+}
+
+model Experience {
+  id          String   @id @default(uuid())
+  company     String
+  role        String
+  period      String
+  location    String
+  description String   @db.Text
+  highlights  String[]
+  skills      String[]
+  isCurrent   Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SkillCategory {
+  id          String   @id
+  title       String
+  description String   @db.Text
+  order       Int      @default(0)
+  skills      Skill[]
+  updatedAt   DateTime @updatedAt
+}
+
+model Skill {
+  id         String        @id @default(uuid())
+  categoryId String
+  category   SkillCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name       String
+  level      String        @default("Hands-on")
+  order      Int           @default(0)
+  updatedAt  DateTime      @updatedAt
+}
+
+model ContactMessage {
+  id          String   @id @default(uuid())
+  senderName  String
+  senderEmail String
+  subject     String
+  message     String   @db.Text
+  status      String   @default("UNREAD")
+  createdAt   DateTime @default(now())
+}

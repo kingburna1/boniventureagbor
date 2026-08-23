@@ -1,9 +1,18 @@
+'use client';
+
 import React from 'react';
+import { SkillCategory } from '@/types/skill';
 import { SKILLS_DATA } from '@/data/skillsData';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { SkillsCarousel } from '@/components/features/skills/SkillsCarousel';
 
-export const SkillsSection: React.FC = () => {
+export interface SkillsSectionProps {
+  categories?: SkillCategory[];
+}
+
+export const SkillsSection: React.FC<SkillsSectionProps> = ({
+  categories = SKILLS_DATA,
+}) => {
   return (
     <section id="skills" className="py-24 px-4 md:px-8 border-t border-surface-border">
       <div className="max-w-6xl mx-auto space-y-10">
@@ -30,7 +39,7 @@ export const SkillsSection: React.FC = () => {
         </div>
 
         {/* Professional Auto-Moving Skills Carousel */}
-        <SkillsCarousel categories={SKILLS_DATA} />
+        <SkillsCarousel categories={categories} />
       </div>
     </section>
   );

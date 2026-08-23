@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { SkillCategory } from '@/types/skill';
 import { Card } from '@/components/ui/Card';

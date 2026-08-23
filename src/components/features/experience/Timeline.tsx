@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { ExperienceItem as ExperienceType } from '@/types/experience';
 import { TimelineItem } from './TimelineItem';

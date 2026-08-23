@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Mail, MapPin, Globe } from 'lucide-react';
 import { PERSONAL_DATA } from '@/data/personalData';

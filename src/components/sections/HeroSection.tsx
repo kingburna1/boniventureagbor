@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Code2, Sparkles, Terminal } from 'lucide-react';
+import { ArrowRight, Terminal } from 'lucide-react';
 import { PERSONAL_DATA } from '@/data/personalData';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
@@ -20,7 +20,7 @@ export const HeroSection: React.FC = () => {
         {/* Left Column: Hero Headline & Content */}
         <div className="lg:col-span-7 space-y-6 text-center md:text-left">
           {/* Availability Badge */}
-          {/* <motion.div
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -31,7 +31,7 @@ export const HeroSection: React.FC = () => {
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
             </span>
             <Badge variant="accent">{PERSONAL_DATA.availability}</Badge>
-          </motion.div> */}
+          </motion.div>
 
           {/* Hero Headline & Dynamic Word Cycling Title */}
           <motion.div
@@ -75,7 +75,7 @@ export const HeroSection: React.FC = () => {
           </motion.p>
 
           {/* CTA Buttons */}
-          {/* <motion.div
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
@@ -87,7 +87,7 @@ export const HeroSection: React.FC = () => {
             <Button href="#contact" variant="secondary" size="lg" icon={<Terminal className="w-5 h-5" />}>
               Get In Touch
             </Button>
-          </motion.div> */}
+          </motion.div>
 
           {/* Quick Stats Grid with Continuous Ping-Pong Counting Numbers */}
           <motion.div

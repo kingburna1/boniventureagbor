@@ -8,11 +8,17 @@ import { ProjectFilter } from '@/components/features/projects/ProjectFilter';
 import { ProjectCard } from '@/components/features/projects/ProjectCard';
 import { CaseStudyModal } from '@/components/features/projects/CaseStudyModal';
 
-export const ProjectsSection: React.FC = () => {
+export interface ProjectsSectionProps {
+  projects?: Project[];
+}
+
+export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
+  projects = PROJECTS_DATA,
+}) => {
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>('all');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const filteredProjects = PROJECTS_DATA.filter((project) => {
+  const filteredProjects = projects.filter((project) => {
     if (activeCategory === 'all') return true;
     return project.category === activeCategory;
   });

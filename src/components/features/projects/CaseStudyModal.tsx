@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { ExternalLink, Github, CheckCircle2, Cpu, BarChart3, AlertCircle } from 'lucide-react';
 import { Project } from '@/types/project';

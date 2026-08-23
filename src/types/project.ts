@@ -13,6 +13,7 @@ export interface CaseStudy {
 
 export interface Project {
   id: string;
+  slug?: string;
   title: string;
   tagline: string;
   category: ProjectCategory;

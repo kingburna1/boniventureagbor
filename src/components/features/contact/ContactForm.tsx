@@ -24,15 +24,33 @@ export const ContactForm: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormState({ status: 'submitting' });
 
-    // Simulate async submission
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || 'Failed to send your message. Please try again.');
+      }
+
       setFormState({ status: 'success' });
       setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 1200);
+    } catch (err: any) {
+      setFormState({
+        status: 'error',
+        errorMessage: err.message || 'An unexpected error occurred. Please try again.',
+      });
+    }
   };
 
   return (

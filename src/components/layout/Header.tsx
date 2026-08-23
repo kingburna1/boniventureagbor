@@ -11,7 +11,13 @@ import { MobileMenu } from './MobileMenu';
 import { Button } from '../ui/Button';
 import { ThemeToggle } from '../ui/ThemeToggle';
 
-export const Header: React.FC = () => {
+export interface HeaderProps {
+  resumeUrl?: string;
+}
+
+export const Header: React.FC<HeaderProps> = ({
+  resumeUrl = PERSONAL_DATA.resumeUrl,
+}) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const activeId = useScrollspy(NAV_ITEMS.map((item) => item.id));
   const isScrolled = useHeaderScroll();
@@ -39,7 +45,7 @@ export const Header: React.FC = () => {
         {/* Action Button & Theme Toggle */}
         <div className="flex items-center gap-2.5">
           <ThemeToggle />
-          <Button href={PERSONAL_DATA.resumeUrl} isExternal variant="outline" size="sm" className="hidden sm:inline-flex">
+          <Button href={resumeUrl} isExternal variant="outline" size="sm" className="hidden sm:inline-flex">
             Resume
           </Button>
           <button
@@ -58,7 +64,7 @@ export const Header: React.FC = () => {
         onClose={() => setMobileOpen(false)}
         items={NAV_ITEMS}
         activeId={activeId}
-        resumeUrl={PERSONAL_DATA.resumeUrl}
+        resumeUrl={resumeUrl}
       />
     </header>
   );
