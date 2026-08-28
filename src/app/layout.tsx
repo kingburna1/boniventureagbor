@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { PERSONAL_DATA } from '@/data/personalData';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
+import { SmoothScrollProvider } from '@/components/providers/SmoothScrollProvider';
+import { LanguageProvider } from '@/i18n/context';
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://boniventure.dev'),
@@ -70,9 +72,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
-      <body className="bg-background text-foreground antialiased selection:bg-accent/30 selection:text-accent">
+      <body className="bg-background text-foreground font-sans antialiased selection:bg-accent/30 selection:text-accent">
         <ThemeProvider>
-          {children}
+          <LanguageProvider>
+            <SmoothScrollProvider>
+              {children}
+            </SmoothScrollProvider>
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

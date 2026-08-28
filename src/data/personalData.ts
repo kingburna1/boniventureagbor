@@ -8,7 +8,7 @@ export const PERSONAL_DATA = {
   avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
   resumeUrl: "#",
   aboutMe: {
-    leadParagraph: "Hi, I'm Boniventure Agbor — a Full-Stack Engineer and Product Designer passionate about creating elegant, fast, and accessible digital products.",
+    leadParagraph: "I'm Boniventure Agbor — a full stack developer who ships exceptional digital products. From React interfaces to scalable backends, I build experiences that are beautiful, fast, and production-ready.",
     bodyParagraph: "I specialize in building end-to-end web applications that combine intuitive user interfaces with resilient, scalable backend systems. By blending design thinking with modern TypeScript and Next.js engineering, I ensure every product not only looks visually stunning but also delivers sub-second load times and rock-solid code reliability.",
     highlights: [
       "End-to-End Product Architecture (FE → BE → Cloud)",

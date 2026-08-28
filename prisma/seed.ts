@@ -1,9 +1,36 @@
+import fs from 'fs';
+import path from 'path';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { PERSONAL_DATA } from '../src/data/personalData';
 import { PROJECTS_DATA } from '../src/data/projectsData';
 import { EXPERIENCE_DATA } from '../src/data/experienceData';
 import { SKILLS_DATA } from '../src/data/skillsData';
+
+// Native .env parser
+try {
+  const envPath = path.resolve(process.cwd(), '.env');
+  if (fs.existsSync(envPath)) {
+    const envContent = fs.readFileSync(envPath, 'utf8');
+    envContent.split('\n').forEach((line) => {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) return;
+      const eqIdx = trimmed.indexOf('=');
+      if (eqIdx > 0) {
+        const key = trimmed.slice(0, eqIdx).trim();
+        let val = trimmed.slice(eqIdx + 1).trim();
+        if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+          val = val.slice(1, -1);
+        }
+        if (!process.env[key]) {
+          process.env[key] = val;
+        }
+      }
+    });
+  }
+} catch (e) {
+  console.warn('⚠️ Note: could not load .env file manually');
+}
 
 const prisma = new PrismaClient();
 

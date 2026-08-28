@@ -75,7 +75,11 @@ const getSkillIcon = (name: string) => {
   return <Terminal className="w-4 h-4 text-foreground/60 shrink-0" />;
 };
 
+import { motion, useReducedMotion } from 'framer-motion';
+
 export const SkillBadge: React.FC<SkillBadgeProps> = ({ skill }) => {
+  const shouldReduceMotion = useReducedMotion();
+
   const getLevelBadgeStyle = (level?: string) => {
     switch (level) {
       case 'Core':
@@ -92,7 +96,14 @@ export const SkillBadge: React.FC<SkillBadgeProps> = ({ skill }) => {
   };
 
   return (
-    <div className="flex items-center justify-between gap-3 p-2.5 rounded-lg bg-surface border border-surface-border text-sm hover:border-accent/40 transition-all duration-200 shadow-sm group">
+    <motion.div
+      whileHover={
+        shouldReduceMotion
+          ? undefined
+          : { y: -2, scale: 1.015, transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] } }
+      }
+      className="flex items-center justify-between gap-3 p-2.5 rounded-lg bg-surface border border-surface-border text-sm hover:border-accent/40 transition-colors duration-200 shadow-sm group cursor-default"
+    >
       <div className="flex items-center gap-2.5 min-w-0">
         {getSkillIcon(skill.name)}
         <span className="font-medium text-foreground truncate group-hover:text-accent transition-colors">
@@ -101,10 +112,14 @@ export const SkillBadge: React.FC<SkillBadgeProps> = ({ skill }) => {
       </div>
 
       {skill.level && (
-        <span className={`text-[11px] font-mono px-2 py-0.5 rounded border font-semibold shrink-0 ${getLevelBadgeStyle(skill.level)}`}>
+        <span
+          className={`text-[11px] font-mono px-2 py-0.5 rounded border font-semibold shrink-0 transition-colors ${getLevelBadgeStyle(
+            skill.level
+          )}`}
+        >
           {skill.level}
         </span>
       )}
-    </div>
+    </motion.div>
   );
 };

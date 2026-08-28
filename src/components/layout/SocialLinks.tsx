@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Github, Linkedin, Twitter, Figma } from 'lucide-react';
 
 export interface SocialLinksProps {
@@ -14,10 +15,14 @@ export interface SocialLinksProps {
 }
 
 export const SocialLinks: React.FC<SocialLinksProps> = ({ socials, className }) => {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <div className={`flex items-center gap-3 ${className || ''}`}>
       {socials.github && (
-        <a
+        <motion.a
+          whileHover={shouldReduceMotion ? undefined : { y: -2 }}
+          transition={{ duration: 0.2 }}
           href={socials.github}
           target="_blank"
           rel="noopener noreferrer"
@@ -25,10 +30,12 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({ socials, className }) 
           aria-label="GitHub Profile"
         >
           <Github className="w-5 h-5" />
-        </a>
+        </motion.a>
       )}
       {socials.linkedin && (
-        <a
+        <motion.a
+          whileHover={shouldReduceMotion ? undefined : { y: -2 }}
+          transition={{ duration: 0.2 }}
           href={socials.linkedin}
           target="_blank"
           rel="noopener noreferrer"
@@ -36,10 +43,12 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({ socials, className }) 
           aria-label="LinkedIn Profile"
         >
           <Linkedin className="w-5 h-5" />
-        </a>
+        </motion.a>
       )}
       {socials.twitter && (
-        <a
+        <motion.a
+          whileHover={shouldReduceMotion ? undefined : { y: -2 }}
+          transition={{ duration: 0.2 }}
           href={socials.twitter}
           target="_blank"
           rel="noopener noreferrer"
@@ -47,10 +56,12 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({ socials, className }) 
           aria-label="Twitter / X Profile"
         >
           <Twitter className="w-5 h-5" />
-        </a>
+        </motion.a>
       )}
       {socials.figma && (
-        <a
+        <motion.a
+          whileHover={shouldReduceMotion ? undefined : { y: -2 }}
+          transition={{ duration: 0.2 }}
           href={socials.figma}
           target="_blank"
           rel="noopener noreferrer"
@@ -58,7 +69,7 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({ socials, className }) 
           aria-label="Figma Profile"
         >
           <Figma className="w-5 h-5" />
-        </a>
+        </motion.a>
       )}
     </div>
   );

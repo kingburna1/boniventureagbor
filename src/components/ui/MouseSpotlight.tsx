@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { motion, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useMotionTemplate, useReducedMotion } from 'framer-motion';
 
 export const MouseSpotlight: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
   const mouseX = useMotionValue(-1000);
   const mouseY = useMotionValue(-1000);
 
@@ -12,6 +13,8 @@ export const MouseSpotlight: React.FC = () => {
   const smoothY = useSpring(mouseY, { damping: 28, stiffness: 180 });
 
   useEffect(() => {
+    if (shouldReduceMotion) return;
+
     const handleMouseMove = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
@@ -19,7 +22,9 @@ export const MouseSpotlight: React.FC = () => {
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [mouseX, mouseY]);
+  }, [mouseX, mouseY, shouldReduceMotion]);
+
+  if (shouldReduceMotion) return null;
 
   // Dual-stop radial gradient combining primary accent and secondary glow tint
   const background = useMotionTemplate`radial-gradient(650px circle at ${smoothX}px ${smoothY}px, var(--accent-light) 0%, var(--accent-glow) 45%, transparent 80%)`;

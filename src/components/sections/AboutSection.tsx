@@ -1,22 +1,26 @@
 'use client';
 
 import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Lightbulb, ShieldCheck, Layers } from 'lucide-react';
-import { PERSONAL_DATA } from '@/data/personalData';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { Card } from '@/components/ui/Card';
 import { AboutProfileCard } from '@/components/features/about/AboutProfileCard';
+import { PrincipleCard } from '@/components/features/about/PrincipleCard';
+import { containerStagger } from '@/lib/motion';
+import { useTranslation } from '@/i18n/context';
 
 export const AboutSection: React.FC = () => {
   const icons = [Lightbulb, ShieldCheck, Layers];
+  const shouldReduceMotion = useReducedMotion();
+  const { dictionary } = useTranslation();
 
   return (
     <section id="about" className="py-24 px-4 md:px-8 border-t border-surface-border bg-surface/20">
       <div className="max-w-6xl mx-auto space-y-16">
         <SectionHeader
-          badgeText="About & Philosophy"
-          title="Engineering with Design Rigor"
-          subtitle="Combining high-fidelity UI design craftsmanship with robust, enterprise-grade software engineering."
+          badgeText={dictionary.about.badge}
+          title={dictionary.about.title}
+          subtitle={dictionary.about.subtitle}
         />
 
         {/* Senior Designer Profile Narrative & Photo Sub-Section */}
@@ -24,27 +28,29 @@ export const AboutSection: React.FC = () => {
 
         {/* Philosophy Grid */}
         <div className="space-y-6">
-          <h4 className="text-lg font-bold text-foreground text-center font-mono uppercase tracking-widest text-foreground/80">
-            Core Engineering Principles
+          <h4 className="text-xs sm:text-sm font-bold text-foreground text-center font-mono uppercase tracking-[0.2em] text-foreground/80">
+            {dictionary.about.principlesTitle}
           </h4>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {PERSONAL_DATA.philosophy.map((item, index) => {
+          <motion.div
+            variants={shouldReduceMotion ? undefined : containerStagger(0.08, 0.05)}
+            initial={shouldReduceMotion ? undefined : 'hidden'}
+            whileInView={shouldReduceMotion ? undefined : 'visible'}
+            viewport={{ once: true, margin: '-40px' }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          >
+            {dictionary.about.philosophy.map((item, index) => {
               const Icon = icons[index % icons.length];
               return (
-                <Card key={index} className="space-y-4">
-                  <div className="w-12 h-12 rounded-lg bg-accent/15 text-accent flex items-center justify-center">
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm text-foreground/70 leading-relaxed">
-                    {item.description}
-                  </p>
-                </Card>
+                <PrincipleCard
+                  key={index}
+                  index={index}
+                  title={item.title}
+                  description={item.description}
+                  icon={Icon}
+                />
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

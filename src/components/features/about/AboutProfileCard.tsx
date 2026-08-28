@@ -2,34 +2,37 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { MapPin, Mail, Sparkles, CheckCircle2, Award } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { MapPin, CheckCircle2, Award } from 'lucide-react';
 import { PERSONAL_DATA } from '@/data/personalData';
-import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { CopyEmailButton } from '../contact/CopyEmailButton';
+import { EASE_CINEMATIC, fadeUp, containerStagger } from '@/lib/motion';
+import { useTranslation } from '@/i18n/context';
 
 export const AboutProfileCard: React.FC = () => {
-  const { aboutMe } = PERSONAL_DATA;
+  const shouldReduceMotion = useReducedMotion();
+  const { dictionary, locale } = useTranslation();
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center mb-16">
-      {/* Left Column: Senior Designer Profile Image Frame */}
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-16">
+      {/* Left Column: Senior Developer Profile Image Frame */}
       <motion.div
-        initial={{ opacity: 0, x: -30 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
+        initial={shouldReduceMotion ? undefined : { opacity: 0.2, y: 24 }}
+        whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ duration: 0.7, ease: EASE_CINEMATIC }}
         className="lg:col-span-5 flex justify-center"
       >
         <div className="relative w-full max-w-sm group">
           {/* Ambient Glow behind Photo */}
-          <div className="absolute -inset-2 bg-gradient-to-r from-accent via-purple-500 to-pink-500 rounded-3xl opacity-30 blur-xl group-hover:opacity-60 transition-opacity duration-500 pointer-events-none" />
+          <div className="absolute -inset-2 bg-gradient-to-r from-accent/30 via-purple-500/20 to-pink-500/20 rounded-3xl opacity-35 blur-xl group-hover:opacity-65 transition-opacity duration-500 pointer-events-none" />
 
-          {/* Glass Photo Frame */}
+          {/* Glass Photo Frame with Restrained Tactile Hover */}
           <motion.div
-            whileHover={{ scale: 1.03, y: -6, rotateY: 2 }}
-            className="relative rounded-2xl overflow-hidden bg-surface/60 border border-surface-border group-hover:border-accent/60 backdrop-blur-xl shadow-2xl p-2.5 transition-all duration-500"
+            whileHover={shouldReduceMotion ? undefined : { scale: 1.012, y: -3 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="relative rounded-2xl overflow-hidden bg-surface/60 border border-surface-border group-hover:border-accent/40 backdrop-blur-xl shadow-xl p-2.5 transition-colors duration-300"
           >
             <div className="relative aspect-[4/5] rounded-xl overflow-hidden bg-surface-border">
               <Image
@@ -37,7 +40,7 @@ export const AboutProfileCard: React.FC = () => {
                 alt={PERSONAL_DATA.name}
                 fill
                 sizes="(max-width: 768px) 100vw, 400px"
-                className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                className="object-cover group-hover:scale-102 transition-transform duration-700 ease-out"
               />
 
               {/* Gradient Vignette Overlay */}
@@ -51,56 +54,87 @@ export const AboutProfileCard: React.FC = () => {
                   </div>
                   <div>
                     <p className="text-xs font-bold text-foreground">{PERSONAL_DATA.name}</p>
-                    <p className="text-[10px] font-mono text-accent">Verified Developer</p>
+                    <p className="text-[10px] font-mono text-accent">{dictionary.about.verifiedDev}</p>
                   </div>
                 </div>
-                <Badge variant="accent">Craftsmanship</Badge>
+                <Badge variant="accent">{dictionary.about.craftsmanship}</Badge>
               </div>
             </div>
           </motion.div>
         </div>
       </motion.div>
 
-      {/* Right Column: Bio Narrative & Story */}
+      {/* Right Column: Editorial Bio Narrative & Story */}
       <motion.div
-        initial={{ opacity: 0, x: 30 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.1 }}
+        variants={shouldReduceMotion ? undefined : containerStagger(0.08, 0.05)}
+        initial={shouldReduceMotion ? undefined : 'hidden'}
+        whileInView={shouldReduceMotion ? undefined : 'visible'}
+        viewport={{ once: true, margin: '-40px' }}
         className="lg:col-span-7 space-y-6"
       >
-        <div className="space-y-3">
-          <span className="inline-flex items-center gap-1.5 text-xs font-mono text-accent uppercase tracking-widest px-3 py-1 rounded-full bg-accent/10 border border-accent/20">
-            <Sparkles className="w-3.5 h-3.5" /> Background &amp; Story
-          </span>
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-foreground tracking-tight leading-tight">
-            {aboutMe.leadParagraph}
-          </h3>
-        </div>
+        {/* 1. Eyebrow Label */}
+        <motion.div
+          variants={fadeUp}
+          className="flex items-center gap-2.5 text-xs sm:text-sm font-bold tracking-[0.2em] uppercase text-foreground/90 font-mono"
+        >
+          <span className="w-2 h-2 rounded-full bg-foreground inline-block shrink-0" />
+          <span>{dictionary.about.backgroundStory}</span>
+        </motion.div>
 
-        <p className="text-base md:text-lg text-foreground/75 leading-relaxed font-normal">
-          {aboutMe.bodyParagraph}
-        </p>
+        {/* 2. Main Bold Statement */}
+        <motion.h3
+          variants={fadeUp}
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-bold text-foreground tracking-tight leading-[1.25]"
+        >
+          {dictionary.about.leadParagraph}
+        </motion.h3>
 
-        {/* Core Expertise Bullet Points */}
-        <div className="space-y-3 pt-2">
-          {aboutMe.highlights.map((item, index) => (
-            <div key={index} className="flex items-start gap-3 p-3 rounded-xl bg-surface/50 border border-surface-border/70 hover:border-accent/30 transition-colors">
+        {/* 3. Highlighted CV Action */}
+        <motion.div variants={fadeUp} className="pt-1">
+          <a
+            href={PERSONAL_DATA.resumeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 text-2xl sm:text-3xl md:text-4xl font-bold text-lime-500 dark:text-[#bef264] hover:text-lime-600 dark:hover:text-[#d9f99d] underline underline-offset-8 decoration-[3px] decoration-lime-500 dark:decoration-[#bef264] transition-all group"
+          >
+            <span>{locale === 'fr' ? 'Télécharger mon CV.' : 'Download my CV.'}</span>
+            <span className="inline-block w-2.5 h-2.5 rounded-full bg-foreground/80 group-hover:scale-125 transition-transform" />
+          </a>
+        </motion.div>
+
+        {/* 4. Supporting Narrative */}
+        <motion.p
+          variants={fadeUp}
+          className="text-base md:text-lg text-foreground/75 leading-relaxed font-normal pt-2"
+        >
+          {dictionary.about.bodyParagraph}
+        </motion.p>
+
+        {/* 5. Core Expertise Bullet Points */}
+        <motion.div variants={fadeUp} className="space-y-3 pt-2">
+          {dictionary.about.highlights.map((item, index) => (
+            <div
+              key={index}
+              className="flex items-start gap-3 p-3 rounded-xl bg-surface/50 border border-surface-border/70 hover:border-accent/30 transition-colors"
+            >
               <CheckCircle2 className="w-5 h-5 text-accent shrink-0 mt-0.5" />
               <span className="text-sm font-medium text-foreground/90">{item}</span>
             </div>
           ))}
-        </div>
+        </motion.div>
 
-        {/* Info Chips & Direct Action */}
-        <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-surface-border">
+        {/* 6. Info Chips & Direct Action */}
+        <motion.div
+          variants={fadeUp}
+          className="flex flex-wrap items-center gap-4 pt-4 border-t border-surface-border"
+        >
           <div className="flex items-center gap-2 text-xs font-mono text-foreground/70 bg-surface px-3 py-2 rounded-lg border border-surface-border">
             <MapPin className="w-4 h-4 text-accent" />
-            <span>{PERSONAL_DATA.location}</span>
+            <span>{dictionary.about.location}</span>
           </div>
 
           <CopyEmailButton email={PERSONAL_DATA.email} />
-        </div>
+        </motion.div>
       </motion.div>
     </div>
   );

@@ -1,11 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Send, CheckCircle2, AlertCircle } from 'lucide-react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { Send, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import { ContactFormData, ContactFormState } from '@/types/contact';
 import { Button } from '@/components/ui/Button';
+import { EASE_CINEMATIC } from '@/lib/motion';
+import { useTranslation } from '@/i18n/context';
 
 export const ContactForm: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
+  const { dictionary } = useTranslation();
+
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
@@ -40,7 +46,7 @@ export const ContactForm: React.FC = () => {
       const result = await response.json();
 
       if (!response.ok || !result.success) {
-        throw new Error(result.error || 'Failed to send your message. Please try again.');
+        throw new Error(result.error || dictionary.contact.form.errorMessage);
       }
 
       setFormState({ status: 'success' });
@@ -48,7 +54,7 @@ export const ContactForm: React.FC = () => {
     } catch (err: any) {
       setFormState({
         status: 'error',
-        errorMessage: err.message || 'An unexpected error occurred. Please try again.',
+        errorMessage: err.message || dictionary.contact.form.errorMessage,
       });
     }
   };
@@ -58,7 +64,7 @@ export const ContactForm: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label htmlFor="name" className="block text-xs font-mono text-foreground/70 mb-1">
-            Your Name *
+            {dictionary.contact.form.nameLabel}
           </label>
           <input
             type="text"
@@ -67,14 +73,14 @@ export const ContactForm: React.FC = () => {
             required
             value={formData.name}
             onChange={handleChange}
-            placeholder="John Doe"
-            className="w-full px-4 py-2.5 bg-surface border border-surface-border rounded-lg text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-accent"
+            placeholder={dictionary.contact.form.namePlaceholder}
+            className="w-full px-4 py-2.5 bg-surface border border-surface-border rounded-lg text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent/40 transition-all duration-200"
           />
         </div>
 
         <div>
           <label htmlFor="email" className="block text-xs font-mono text-foreground/70 mb-1">
-            Email Address *
+            {dictionary.contact.form.emailLabel}
           </label>
           <input
             type="email"
@@ -83,15 +89,15 @@ export const ContactForm: React.FC = () => {
             required
             value={formData.email}
             onChange={handleChange}
-            placeholder="john@example.com"
-            className="w-full px-4 py-2.5 bg-surface border border-surface-border rounded-lg text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-accent"
+            placeholder={dictionary.contact.form.emailPlaceholder}
+            className="w-full px-4 py-2.5 bg-surface border border-surface-border rounded-lg text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent/40 transition-all duration-200"
           />
         </div>
       </div>
 
       <div>
         <label htmlFor="subject" className="block text-xs font-mono text-foreground/70 mb-1">
-          Subject *
+          {dictionary.contact.form.subjectLabel}
         </label>
         <input
           type="text"
@@ -100,14 +106,14 @@ export const ContactForm: React.FC = () => {
           required
           value={formData.subject}
           onChange={handleChange}
-          placeholder="Senior Engineering Role / Project Inquiry"
-          className="w-full px-4 py-2.5 bg-surface border border-surface-border rounded-lg text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-accent"
+          placeholder={dictionary.contact.form.subjectPlaceholder}
+          className="w-full px-4 py-2.5 bg-surface border border-surface-border rounded-lg text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent/40 transition-all duration-200"
         />
       </div>
 
       <div>
         <label htmlFor="message" className="block text-xs font-mono text-foreground/70 mb-1">
-          Message *
+          {dictionary.contact.form.messageLabel}
         </label>
         <textarea
           id="message"
@@ -116,33 +122,56 @@ export const ContactForm: React.FC = () => {
           rows={5}
           value={formData.message}
           onChange={handleChange}
-          placeholder="Tell me about your project, team, or opportunity..."
-          className="w-full px-4 py-2.5 bg-surface border border-surface-border rounded-lg text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-accent resize-none"
+          placeholder={dictionary.contact.form.messagePlaceholder}
+          className="w-full px-4 py-2.5 bg-surface border border-surface-border rounded-lg text-sm text-foreground placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent/40 transition-all duration-200 resize-none"
         />
       </div>
 
-      {formState.status === 'success' && (
-        <div className="flex items-center gap-2 p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-400 text-sm">
-          <CheckCircle2 className="w-5 h-5 shrink-0" />
-          <span>Message sent successfully! I will respond within 24 hours.</span>
-        </div>
-      )}
+      {/* Animated Validation / Status Feedback */}
+      <AnimatePresence mode="wait">
+        {formState.status === 'success' && (
+          <motion.div
+            key="success"
+            initial={shouldReduceMotion ? undefined : { opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.25, ease: EASE_CINEMATIC }}
+            className="flex items-center gap-2.5 p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-400 text-sm"
+          >
+            <CheckCircle2 className="w-5 h-5 shrink-0" />
+            <span>{dictionary.contact.form.successMessage}</span>
+          </motion.div>
+        )}
 
-      {formState.status === 'error' && (
-        <div className="flex items-center gap-2 p-3 bg-rose-500/10 border border-rose-500/30 rounded-lg text-rose-400 text-sm">
-          <AlertCircle className="w-5 h-5 shrink-0" />
-          <span>{formState.errorMessage || 'Something went wrong. Please try again.'}</span>
-        </div>
-      )}
+        {formState.status === 'error' && (
+          <motion.div
+            key="error"
+            initial={shouldReduceMotion ? undefined : { opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.25, ease: EASE_CINEMATIC }}
+            className="flex items-center gap-2.5 p-3 bg-rose-500/10 border border-rose-500/30 rounded-lg text-rose-400 text-sm"
+          >
+            <AlertCircle className="w-5 h-5 shrink-0" />
+            <span>{formState.errorMessage || dictionary.contact.form.errorMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <Button
         type="submit"
         variant="primary"
         className="w-full sm:w-auto"
         disabled={formState.status === 'submitting'}
-        icon={<Send className="w-4 h-4" />}
+        icon={
+          formState.status === 'submitting' ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <Send className="w-4 h-4" />
+          )
+        }
       >
-        {formState.status === 'submitting' ? 'Sending Message...' : 'Send Message'}
+        {formState.status === 'submitting' ? dictionary.contact.form.sendingButton : dictionary.contact.form.sendButton}
       </Button>
     </form>
   );

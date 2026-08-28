@@ -7,6 +7,7 @@ import { SkillsSection } from '@/components/sections/SkillsSection';
 import { ContactSection } from '@/components/sections/ContactSection';
 import { Footer } from '@/components/layout/Footer';
 import { MouseSpotlight } from '@/components/ui/MouseSpotlight';
+import { SceneCanvas } from '@/components/canvas/SceneCanvas';
 import { getProfileData, getProjectsData, getExperienceData, getSkillsData } from '@/lib/portfolio';
 
 export const revalidate = 60; // Revalidate dynamic content every 60 seconds (ISR)
@@ -21,6 +22,9 @@ export default async function Home() {
 
   return (
     <div className="relative min-h-screen bg-background text-foreground selection:bg-accent/20">
+      {/* Persistent WebGL Shader Background Canvas */}
+      <SceneCanvas />
+
       {/* Mouse-Following Ambient Spotlight */}
       <MouseSpotlight />
 

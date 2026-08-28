@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Mail, MapPin, Globe } from 'lucide-react';
 import { PERSONAL_DATA } from '@/data/personalData';
 import { SectionHeader } from '@/components/ui/SectionHeader';
@@ -8,25 +9,36 @@ import { Card } from '@/components/ui/Card';
 import { ContactForm } from '@/components/features/contact/ContactForm';
 import { CopyEmailButton } from '@/components/features/contact/CopyEmailButton';
 import { SocialLinks } from '@/components/layout/SocialLinks';
+import { containerStagger, cardEntrance } from '@/lib/motion';
+import { useTranslation } from '@/i18n/context';
 
 export const ContactSection: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
+  const { dictionary } = useTranslation();
+
   return (
     <section id="contact" className="py-24 px-4 md:px-8 border-t border-surface-border bg-surface/20">
       <div className="max-w-6xl mx-auto space-y-12">
         <SectionHeader
-          badgeText="Let's Connect"
-          title="Start a Conversation"
-          subtitle="Interested in building something exceptional together? Send a message or copy my email below."
+          badgeText={dictionary.contact.badge}
+          title={dictionary.contact.title}
+          subtitle={dictionary.contact.subtitle}
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        <motion.div
+          variants={shouldReduceMotion ? undefined : containerStagger(0.12, 0.05)}
+          initial={shouldReduceMotion ? undefined : 'hidden'}
+          whileInView={shouldReduceMotion ? undefined : 'visible'}
+          viewport={{ once: true, margin: '-50px' }}
+          className="grid grid-cols-1 lg:grid-cols-5 gap-8"
+        >
           {/* Left Column: Direct Info & Copy Button */}
-          <div className="lg:col-span-2 space-y-6">
+          <motion.div variants={cardEntrance} className="lg:col-span-2 space-y-6">
             <Card className="space-y-6">
               <div>
-                <h3 className="text-xl font-bold text-foreground">Contact Information</h3>
+                <h3 className="text-xl font-bold text-foreground">{dictionary.contact.cardTitle}</h3>
                 <p className="text-sm text-foreground/70 mt-1">
-                  Open for full-time senior engineering opportunities, contract architecture, and UX consulting.
+                  {dictionary.contact.cardDescription}
                 </p>
               </div>
 
@@ -36,7 +48,7 @@ export const ContactSection: React.FC = () => {
                     <Mail className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-xs font-mono text-foreground/50">Direct Email</p>
+                    <p className="text-xs font-mono text-foreground/50">{dictionary.contact.directEmail}</p>
                     <p className="font-medium text-foreground">{PERSONAL_DATA.email}</p>
                   </div>
                 </div>
@@ -46,8 +58,8 @@ export const ContactSection: React.FC = () => {
                     <MapPin className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-xs font-mono text-foreground/50">Location</p>
-                    <p className="font-medium text-foreground">{PERSONAL_DATA.location}</p>
+                    <p className="text-xs font-mono text-foreground/50">{dictionary.contact.locationLabel}</p>
+                    <p className="font-medium text-foreground">{dictionary.about.location}</p>
                   </div>
                 </div>
 
@@ -56,8 +68,8 @@ export const ContactSection: React.FC = () => {
                     <Globe className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-xs font-mono text-foreground/50">Availability</p>
-                    <p className="font-medium text-foreground">{PERSONAL_DATA.availability}</p>
+                    <p className="text-xs font-mono text-foreground/50">{dictionary.contact.availabilityLabel}</p>
+                    <p className="font-medium text-foreground">{dictionary.hero.availability}</p>
                   </div>
                 </div>
               </div>
@@ -65,21 +77,21 @@ export const ContactSection: React.FC = () => {
               <div className="pt-4 border-t border-surface-border space-y-4">
                 <CopyEmailButton email={PERSONAL_DATA.email} />
                 <div className="pt-2">
-                  <p className="text-xs font-mono text-foreground/50 mb-2">Connect on Socials</p>
+                  <p className="text-xs font-mono text-foreground/50 mb-2">{dictionary.contact.connectSocials}</p>
                   <SocialLinks socials={PERSONAL_DATA.socials} />
                 </div>
               </div>
             </Card>
-          </div>
+          </motion.div>
 
           {/* Right Column: Contact Form */}
-          <div className="lg:col-span-3">
+          <motion.div variants={cardEntrance} className="lg:col-span-3">
             <Card className="h-full">
-              <h3 className="text-xl font-bold text-foreground mb-6">Send Me a Message</h3>
+              <h3 className="text-xl font-bold text-foreground mb-6">{dictionary.contact.sendMessageTitle}</h3>
               <ContactForm />
             </Card>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 
 export interface CarouselImage {
   id: string;
@@ -39,51 +39,70 @@ export interface HeroCarouselProps {
 
 export const HeroCarousel: React.FC<HeroCarouselProps> = ({
   images = DEFAULT_CAROUSEL_IMAGES,
-  intervalMs = 3500, // Faster image melt interval
+  intervalMs = 4000,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
+    if (shouldReduceMotion) return;
+
     const timer = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
     }, intervalMs);
 
     return () => clearInterval(timer);
-  }, [images.length, intervalMs]);
+  }, [images.length, intervalMs, shouldReduceMotion]);
 
   const activeImage = images[currentIndex];
 
   return (
     <motion.div
-      animate={{
-        y: [0, -18, 0],
-        rotate: [0, 3.5, -3.5, 0],
-      }}
-      transition={{
-        duration: 4.5, // Faster, noticeably smooth float loop
-        repeat: Infinity,
-        ease: 'easeInOut',
-      }}
-      whileHover={{
-        scale: 1.08,
-        y: -16,
-        rotateX: 4,
-        rotateY: -4,
-      }}
-      className="relative w-full aspect-[4/3] max-w-md mx-auto rounded-2xl p-2 bg-surface/40 border border-surface-border group-hover:border-accent/70 backdrop-blur-xl shadow-2xl group-hover:shadow-accent/25 transition-all duration-300 overflow-hidden cursor-pointer group"
-      style={{ perspective: 1000 }}
+      initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.98 }}
+      animate={
+        shouldReduceMotion
+          ? { opacity: 1, scale: 1 }
+          : {
+              opacity: 1,
+              y: [0, -5, 0],
+              scale: 1,
+            }
+      }
+      transition={
+        shouldReduceMotion
+          ? { duration: 0.4 }
+          : {
+              opacity: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+              scale: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+              y: {
+                duration: 6,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              },
+            }
+      }
+      whileHover={
+        shouldReduceMotion
+          ? undefined
+          : {
+              scale: 1.015,
+              y: -3,
+              transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] },
+            }
+      }
+      className="relative w-full aspect-[4/3] max-w-md mx-auto rounded-2xl p-2 bg-surface/50 border border-surface-border hover:border-accent/40 backdrop-blur-xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer group"
     >
-      {/* Image Display Window with Next.js Image + Liquid-Blur Melt Transition */}
-      <div className="relative w-full h-full rounded-xl overflow-hidden bg-surface-border/40">
+      {/* Image Display Window with Crossfade */}
+      <div className="relative w-full h-full rounded-xl overflow-hidden bg-surface-border/30">
         <AnimatePresence mode="popLayout">
           <motion.div
             key={activeImage.id}
-            initial={{ opacity: 0, scale: 1.15, filter: 'blur(16px)' }}
-            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, scale: 0.92, filter: 'blur(20px)' }}
+            initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 1.03 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.99 }}
             transition={{
-              duration: 1.1,
-              ease: [0.4, 0.0, 0.2, 1],
+              duration: shouldReduceMotion ? 0.3 : 0.75,
+              ease: [0.22, 1, 0.36, 1],
             }}
             className="absolute inset-0 w-full h-full"
           >
@@ -93,8 +112,8 @@ export const HeroCarousel: React.FC<HeroCarouselProps> = ({
               fill
               priority={currentIndex === 0}
               sizes="(max-width: 768px) 100vw, 450px"
-              quality={85}
-              className="object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
+              quality={90}
+              className="object-cover"
             />
           </motion.div>
         </AnimatePresence>
@@ -103,7 +122,7 @@ export const HeroCarousel: React.FC<HeroCarouselProps> = ({
         <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent pointer-events-none z-10" />
 
         {/* Glossy Sheen Sweep on Hover */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 dark:via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none z-20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 dark:via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none z-20" />
 
         {/* Caption */}
         {activeImage.caption && (

@@ -1,42 +1,23 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { scrollEngine, SectionId } from '@/lib/scrollEngine';
 
-export function useScrollspy(sectionIds: string[], offset: number = 120): string {
+export function useScrollspy(sectionIds: string[]): string {
   const [activeId, setActiveId] = useState<string>(sectionIds[0] || 'hero');
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + offset;
-
-      for (let i = sectionIds.length - 1; i >= 0; i--) {
-        const sectionId = sectionIds[i];
-        const element = document.getElementById(sectionId);
-
-        if (element) {
-          const top = element.offsetTop;
-          if (scrollPosition >= top - 10) {
-            setActiveId(sectionId);
-            break;
-          }
-        }
+    const unsubscribe = scrollEngine.subscribe((state) => {
+      const currentActiveId = state.activeSectionId;
+      if (sectionIds.includes(currentActiveId)) {
+        setActiveId((prev) => (prev !== currentActiveId ? currentActiveId : prev));
       }
-    };
-
-    // Run after DOM paint & hydration
-    const rafId = requestAnimationFrame(() => {
-      handleScroll();
     });
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll, { passive: true });
-
     return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
+      unsubscribe();
     };
-  }, [sectionIds, offset]);
+  }, [sectionIds]);
 
   return activeId;
 }
