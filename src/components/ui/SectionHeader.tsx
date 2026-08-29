@@ -5,11 +5,15 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { MaskedReveal } from '@/components/motion/MaskedReveal';
 import { fadeUp, EASE_CINEMATIC } from '@/lib/motion';
 
+import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
 export interface SectionHeaderProps {
   badgeText?: string;
   title: string;
   subtitle?: string;
   align?: 'left' | 'center';
+  className?: string;
 }
 
 export const SectionHeader: React.FC<SectionHeaderProps> = ({
@@ -17,6 +21,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   title,
   subtitle,
   align = 'center',
+  className,
 }) => {
   const shouldReduceMotion = useReducedMotion();
 
@@ -26,7 +31,13 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
       whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '0px' }}
       transition={{ duration: 0.6, ease: EASE_CINEMATIC }}
-      className={`space-y-3 mb-12 ${align === 'center' ? 'text-center max-w-2xl mx-auto' : 'max-w-xl'}`}
+      className={twMerge(
+        clsx(
+          'space-y-3 mb-12',
+          align === 'center' ? 'text-center max-w-2xl mx-auto' : 'max-w-xl',
+          className
+        )
+      )}
     >
       {badgeText && (
         <span className="inline-block text-xs font-mono tracking-wider uppercase px-3 py-1 rounded-full bg-accent/10 text-accent border border-accent/20">

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Lightbulb, ShieldCheck, Layers } from 'lucide-react';
+import { Lightbulb, ShieldCheck, Layers, Bot } from 'lucide-react';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { AboutProfileCard } from '@/components/features/about/AboutProfileCard';
 import { PrincipleCard } from '@/components/features/about/PrincipleCard';
@@ -10,12 +10,12 @@ import { containerStagger } from '@/lib/motion';
 import { useTranslation } from '@/i18n/context';
 
 export const AboutSection: React.FC = () => {
-  const icons = [Lightbulb, ShieldCheck, Layers];
+  const icons = [Lightbulb, ShieldCheck, Layers, Bot];
   const shouldReduceMotion = useReducedMotion();
   const { dictionary } = useTranslation();
 
   return (
-    <section id="about" className="py-24 px-4 md:px-8 border-t border-surface-border bg-surface/20">
+    <section id="about" className="py-24 px-4 md:px-8 bg-surface/20">
       <div className="max-w-6xl mx-auto space-y-16">
         <SectionHeader
           badgeText={dictionary.about.badge}
@@ -40,14 +40,20 @@ export const AboutSection: React.FC = () => {
           >
             {dictionary.about.philosophy.map((item, index) => {
               const Icon = icons[index % icons.length];
+              const isFullWidth = index === 3;
               return (
-                <PrincipleCard
+                <div
                   key={index}
-                  index={index}
-                  title={item.title}
-                  description={item.description}
-                  icon={Icon}
-                />
+                  className={isFullWidth ? 'col-span-1 md:col-span-3' : 'col-span-1'}
+                >
+                  <PrincipleCard
+                    index={index}
+                    title={item.title}
+                    description={item.description}
+                    icon={Icon}
+                    isFullWidth={isFullWidth}
+                  />
+                </div>
               );
             })}
           </motion.div>

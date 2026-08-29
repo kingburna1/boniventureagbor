@@ -22,7 +22,7 @@ export const SceneCanvas: React.FC<SceneCanvasProps> = ({ particleCount = 1200 }
   return (
     <div
       aria-hidden="true"
-      className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-70 dark:opacity-90 transition-opacity duration-700 select-none"
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-90 dark:opacity-90 transition-opacity duration-700 select-none"
     >
       <Canvas
         camera={{ position: [0, 0, 8], fov: 55, near: 0.1, far: 50 }}

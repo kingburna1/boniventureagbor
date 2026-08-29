@@ -160,7 +160,7 @@ export const HeroSection: React.FC = () => {
             {/* 5. Metrics Grid with Staggered Cards */}
             <motion.div
               variants={fadeUp}
-              className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 pt-6 border-t border-surface-border max-w-2xl mx-auto md:mx-0"
+              className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 pt-6 max-w-2xl mx-auto md:mx-0"
             >
               {localizedStats.map((stat, i) => (
                 <motion.div

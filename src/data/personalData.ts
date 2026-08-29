@@ -41,5 +41,10 @@ export const PERSONAL_DATA = {
       title: "Reliable Backend Systems",
       description: "Engineering secure APIs, services, and data layers that form a dependable foundation for modern full-stack applications and distributed systems.",
     },
+
+     {
+      title: "AI-Driven Coding ",
+      description: "Cursor, Claude, Copilot, and Gemini as daily tools — faster scaffolding, smarter debugging, cleaner refactors, and shipping features without sacrificing code quality or review standards.",
+    },
   ],
 };

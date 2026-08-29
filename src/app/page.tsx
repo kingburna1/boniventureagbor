@@ -8,6 +8,7 @@ import { ContactSection } from '@/components/sections/ContactSection';
 import { Footer } from '@/components/layout/Footer';
 import { MouseSpotlight } from '@/components/ui/MouseSpotlight';
 import { SceneCanvas } from '@/components/canvas/SceneCanvas';
+import { SignaturePreloader } from '@/components/preloader/SignaturePreloader';
 import { getProfileData, getProjectsData, getExperienceData, getSkillsData } from '@/lib/portfolio';
 
 export const revalidate = 60; // Revalidate dynamic content every 60 seconds (ISR)
@@ -22,10 +23,13 @@ export default async function Home() {
 
   return (
     <div className="relative min-h-screen bg-background text-foreground selection:bg-accent/20">
+      {/* Signature Light Preloader */}
+      <SignaturePreloader />
+
       {/* Persistent WebGL Shader Background Canvas */}
       <SceneCanvas />
 
-      {/* Mouse-Following Ambient Spotlight */}
+      {/* Minimal Cursor Indicator */}
       <MouseSpotlight />
 
       {/* Sticky Header & Navbar */}

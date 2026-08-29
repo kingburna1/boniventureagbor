@@ -110,28 +110,44 @@ export const AboutProfileCard: React.FC = () => {
           {dictionary.about.bodyParagraph}
         </motion.p>
 
-        {/* 5. Core Expertise Bullet Points */}
+        {/* 5. Core Expertise Bullet Points with Independent Tactile Hover States */}
         <motion.div variants={fadeUp} className="space-y-3 pt-2">
           {dictionary.about.highlights.map((item, index) => (
-            <div
+            <motion.div
               key={index}
-              className="flex items-start gap-3 p-3 rounded-xl bg-surface/50 border border-surface-border/70 hover:border-accent/30 transition-colors"
+              whileHover={
+                shouldReduceMotion
+                  ? undefined
+                  : { x: 5, scale: 1.01, transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] } }
+              }
+              className="flex items-start gap-3.5 p-3.5 rounded-xl bg-surface/60 hover:bg-surface/90 border border-surface-border/70 hover:border-accent/50 shadow-sm hover:shadow-md hover:shadow-accent/5 transition-all duration-200 cursor-default group select-none"
             >
-              <CheckCircle2 className="w-5 h-5 text-accent shrink-0 mt-0.5" />
-              <span className="text-sm font-medium text-foreground/90">{item}</span>
-            </div>
+              <div className="p-1 rounded-lg bg-accent/10 text-accent group-hover:bg-accent group-hover:text-white transition-colors duration-200 shrink-0 mt-0.5">
+                <CheckCircle2 className="w-4 h-4 transition-transform duration-200 group-hover:scale-110" />
+              </div>
+              <span className="text-sm font-medium text-foreground/85 group-hover:text-foreground transition-colors leading-relaxed">
+                {item}
+              </span>
+            </motion.div>
           ))}
         </motion.div>
 
-        {/* 6. Info Chips & Direct Action */}
+        {/* 6. Info Chips & Direct Action with Interactive Hover Physics */}
         <motion.div
           variants={fadeUp}
-          className="flex flex-wrap items-center gap-4 pt-4 border-t border-surface-border"
+          className="flex flex-wrap items-center gap-4 pt-3"
         >
-          <div className="flex items-center gap-2 text-xs font-mono text-foreground/70 bg-surface px-3 py-2 rounded-lg border border-surface-border">
-            <MapPin className="w-4 h-4 text-accent" />
-            <span>{dictionary.about.location}</span>
-          </div>
+          <motion.div
+            whileHover={
+              shouldReduceMotion
+                ? undefined
+                : { y: -2, scale: 1.02, transition: { duration: 0.18, ease: 'easeOut' } }
+            }
+            className="flex items-center gap-2.5 text-xs font-mono text-foreground/80 bg-surface/80 hover:bg-surface px-3.5 py-2.5 rounded-xl border border-surface-border hover:border-accent/50 shadow-sm hover:shadow-md transition-all duration-200 cursor-default group select-none"
+          >
+            <MapPin className="w-4 h-4 text-accent group-hover:scale-110 transition-transform duration-200" />
+            <span className="group-hover:text-foreground font-medium transition-colors">{dictionary.about.location}</span>
+          </motion.div>
 
           <CopyEmailButton email={PERSONAL_DATA.email} />
         </motion.div>

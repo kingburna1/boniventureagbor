@@ -29,7 +29,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
   });
 
   return (
-    <section id="projects" className="py-24 px-4 md:px-8 border-t border-surface-border">
+    <section id="projects" className="py-24 px-4 md:px-8">
       <div className="max-w-6xl mx-auto space-y-8">
         <SectionHeader
           badgeText={dictionary.projects.badge}

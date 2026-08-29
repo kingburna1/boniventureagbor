@@ -21,7 +21,7 @@ export const Footer: React.FC = () => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      className="border-t border-surface-border bg-surface/30 py-12 relative z-10"
+      className="bg-surface/30 py-12 relative z-10"
     >
       <div className="max-w-6xl mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="text-center md:text-left">

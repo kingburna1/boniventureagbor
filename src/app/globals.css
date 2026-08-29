@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
+  --background: #fafaf8;
   --foreground: #0f172a;
   --accent: #2563eb;
   --accent-hover: #1d4ed8;

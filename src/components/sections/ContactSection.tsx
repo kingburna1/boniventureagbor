@@ -17,7 +17,7 @@ export const ContactSection: React.FC = () => {
   const { dictionary } = useTranslation();
 
   return (
-    <section id="contact" className="py-24 px-4 md:px-8 border-t border-surface-border bg-surface/20">
+    <section id="contact" className="py-24 px-4 md:px-8 bg-surface/20">
       <div className="max-w-6xl mx-auto space-y-12">
         <SectionHeader
           badgeText={dictionary.contact.badge}

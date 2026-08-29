@@ -5,8 +5,8 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { SkillCategory } from '@/types/skill';
 import { SKILLS_DATA } from '@/data/skillsData';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { SkillsCarousel } from '@/components/features/skills/SkillsCarousel';
-import { containerStagger, fadeUp, cardEntrance } from '@/lib/motion';
+import { TechnologyMarquee } from '@/components/features/skills/TechnologyMarquee';
+import { containerStagger, fadeUp } from '@/lib/motion';
 import { useTranslation } from '@/i18n/context';
 
 export interface SkillsSectionProps {
@@ -20,42 +20,46 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
   const { dictionary } = useTranslation();
 
   return (
-    <section id="skills" className="py-24 px-4 md:px-8 border-t border-surface-border">
+    <section id="skills" className="py-20 md:py-28 overflow-hidden">
       <motion.div
-        variants={shouldReduceMotion ? undefined : containerStagger(0.1, 0.05)}
+        variants={shouldReduceMotion ? undefined : containerStagger(0.08, 0.04)}
         initial={shouldReduceMotion ? undefined : 'hidden'}
         whileInView={shouldReduceMotion ? undefined : 'visible'}
         viewport={{ once: true, margin: '-40px' }}
-        className="max-w-6xl mx-auto space-y-10"
+        className="w-full space-y-8"
       >
-        <SectionHeader
-          badgeText={dictionary.skills.badge}
-          title={dictionary.skills.title}
-          subtitle={dictionary.skills.subtitle}
-        />
+        {/* Centered Section Header */}
+        <div className="max-w-6xl mx-auto px-4 md:px-8">
+          <SectionHeader
+            badgeText={dictionary.skills.badge}
+            title={dictionary.skills.title}
+            subtitle={dictionary.skills.subtitle}
+            className="mb-6 md:mb-8"
+          />
 
-        {/* Level Classification Legend */}
-        <motion.div
-          variants={fadeUp}
-          className="flex flex-wrap items-center justify-center gap-4 text-xs font-mono py-2 px-4 rounded-xl bg-surface/50 border border-surface-border max-w-xl mx-auto"
-        >
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-accent" />
-            <span className="text-foreground/80 font-semibold">{dictionary.skills.legend.coreStack}</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-            <span className="text-foreground/80 font-semibold">{dictionary.skills.legend.handsOn}</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-purple-500" />
-            <span className="text-foreground/80 font-semibold">{dictionary.skills.legend.architecture}</span>
-          </div>
-        </motion.div>
+          {/* Minimal Classification Legend Indicator */}
+          <motion.div
+            variants={fadeUp}
+            className="flex flex-wrap items-center justify-center gap-5 text-xs font-mono py-1.5 px-4 rounded-full bg-surface/60 border border-surface-border/80 backdrop-blur-sm max-w-lg mx-auto"
+          >
+            <div className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-accent" />
+              <span className="text-foreground/75 font-medium">{dictionary.skills.legend.coreStack}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              <span className="text-foreground/75 font-medium">{dictionary.skills.legend.handsOn}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-purple-500" />
+              <span className="text-foreground/75 font-medium">{dictionary.skills.legend.architecture}</span>
+            </div>
+          </motion.div>
+        </div>
 
-        {/* Professional Auto-Moving Skills Carousel */}
-        <motion.div variants={cardEntrance}>
-          <SkillsCarousel categories={categories} />
+        {/* Continuous Seamless Infinite Technology Marquee */}
+        <motion.div variants={fadeUp} className="w-full pt-4">
+          <TechnologyMarquee categories={categories} />
         </motion.div>
       </motion.div>
     </section>
