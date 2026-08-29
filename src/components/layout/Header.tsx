@@ -6,12 +6,17 @@ import { NAV_ITEMS } from '@/data/navigationData';
 import { PERSONAL_DATA } from '@/data/personalData';
 import { useScrollspy } from '@/hooks/useScrollspy';
 import { useHeaderScroll } from '@/hooks/useHeaderScroll';
+import dynamic from 'next/dynamic';
 import { useTranslation } from '@/i18n/context';
 import { Navbar } from './Navbar';
-import { MobileMenu } from './MobileMenu';
 import { Button } from '../ui/Button';
 import { ThemeToggle } from '../ui/ThemeToggle';
 import { LanguageToggle } from '../ui/LanguageToggle';
+
+const MobileMenu = dynamic(
+  () => import('./MobileMenu').then((mod) => mod.MobileMenu),
+  { ssr: false }
+);
 
 export interface HeaderProps {
   resumeUrl?: string;

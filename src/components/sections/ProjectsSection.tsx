@@ -7,9 +7,14 @@ import { PROJECTS_DATA } from '@/data/projectsData';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ProjectFilter } from '@/components/features/projects/ProjectFilter';
 import { ProjectCard } from '@/components/features/projects/ProjectCard';
-import { CaseStudyModal } from '@/components/features/projects/CaseStudyModal';
+import dynamic from 'next/dynamic';
 import { containerStagger } from '@/lib/motion';
 import { useTranslation } from '@/i18n/context';
+
+const CaseStudyModal = dynamic(
+  () => import('@/components/features/projects/CaseStudyModal').then((mod) => mod.CaseStudyModal),
+  { ssr: false }
+);
 
 export interface ProjectsSectionProps {
   projects?: Project[];

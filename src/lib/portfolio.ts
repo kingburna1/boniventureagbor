@@ -7,19 +7,36 @@ import { Project, ProjectCategory } from '@/types/project';
 import { ExperienceItem } from '@/types/experience';
 import { SkillCategory } from '@/types/skill';
 
+/**
+ * Timeout wrapper ensuring database latency never blocks page compilation or ISR rendering
+ */
+async function withTimeout<T>(promise: Promise<T>, timeoutMs: number = 1500): Promise<T> {
+  let timer: NodeJS.Timeout;
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`Query timed out after ${timeoutMs}ms`)), timeoutMs);
+  });
+  return Promise.race([promise, timeoutPromise]).finally(() => clearTimeout(timer));
+}
+
 export async function getProfileData() {
   try {
-    const profile = await prisma.personalProfile.findFirst({
-      orderBy: { updatedAt: 'desc' },
-    });
+    const profile = await withTimeout(
+      prisma.personalProfile.findFirst({
+        orderBy: { updatedAt: 'desc' },
+      })
+    );
 
-    const stats = await prisma.stat.findMany({
-      orderBy: { order: 'asc' },
-    });
+    const stats = await withTimeout(
+      prisma.stat.findMany({
+        orderBy: { order: 'asc' },
+      })
+    );
 
-    const philosophy = await prisma.philosophy.findMany({
-      orderBy: { order: 'asc' },
-    });
+    const philosophy = await withTimeout(
+      prisma.philosophy.findMany({
+        orderBy: { order: 'asc' },
+      })
+    );
 
     if (!profile) return PERSONAL_DATA;
 
@@ -46,17 +63,18 @@ export async function getProfileData() {
       philosophy: philosophy.length > 0 ? philosophy.map((p) => ({ title: p.title, description: p.description })) : PERSONAL_DATA.philosophy,
     };
   } catch (error) {
-    console.warn('⚠️ Falling back to static personal data:', error);
     return PERSONAL_DATA;
   }
 }
 
 export async function getProjectsData(): Promise<Project[]> {
   try {
-    const dbProjects = await prisma.project.findMany({
-      orderBy: { order: 'asc' },
-      include: { caseStudy: true },
-    });
+    const dbProjects = await withTimeout(
+      prisma.project.findMany({
+        orderBy: { order: 'asc' },
+        include: { caseStudy: true },
+      })
+    );
 
     if (!dbProjects || dbProjects.length === 0) return PROJECTS_DATA;
 
@@ -93,16 +111,17 @@ export async function getProjectsData(): Promise<Project[]> {
           },
     }));
   } catch (error) {
-    console.warn('⚠️ Falling back to static projects data:', error);
     return PROJECTS_DATA;
   }
 }
 
 export async function getExperienceData(): Promise<ExperienceItem[]> {
   try {
-    const dbExp = await prisma.experience.findMany({
-      orderBy: { order: 'asc' },
-    });
+    const dbExp = await withTimeout(
+      prisma.experience.findMany({
+        orderBy: { order: 'asc' },
+      })
+    );
 
     if (!dbExp || dbExp.length === 0) return EXPERIENCE_DATA;
 
@@ -118,21 +137,22 @@ export async function getExperienceData(): Promise<ExperienceItem[]> {
       isCurrent: e.isCurrent,
     }));
   } catch (error) {
-    console.warn('⚠️ Falling back to static experience data:', error);
     return EXPERIENCE_DATA;
   }
 }
 
 export async function getSkillsData(): Promise<SkillCategory[]> {
   try {
-    const dbCategories = await prisma.skillCategory.findMany({
-      orderBy: { order: 'asc' },
-      include: {
-        skills: {
-          orderBy: { order: 'asc' },
+    const dbCategories = await withTimeout(
+      prisma.skillCategory.findMany({
+        orderBy: { order: 'asc' },
+        include: {
+          skills: {
+            orderBy: { order: 'asc' },
+          },
         },
-      },
-    });
+      })
+    );
 
     if (!dbCategories || dbCategories.length === 0) return SKILLS_DATA;
 
@@ -146,7 +166,6 @@ export async function getSkillsData(): Promise<SkillCategory[]> {
       })),
     }));
   } catch (error) {
-    console.warn('⚠️ Falling back to static skills data:', error);
     return SKILLS_DATA;
   }
 }

@@ -112,9 +112,9 @@ export const en: TranslationDictionary = {
     sendMessageTitle: 'Send Me a Message',
     form: {
       nameLabel: 'Your Name *',
-      namePlaceholder: 'John Doe',
+      namePlaceholder: 'boniventure agbor',
       emailLabel: 'Email Address *',
-      emailPlaceholder: 'john@example.com',
+      emailPlaceholder: 'boniventure@exemple.fr',
       subjectLabel: 'Subject *',
       subjectPlaceholder: 'Senior Engineering Role / Project Inquiry',
       messageLabel: 'Message *',
