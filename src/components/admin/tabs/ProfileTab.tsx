@@ -54,6 +54,12 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({ token, onToast }) => {
 
   useEffect(() => {
     fetchProfile();
+
+    const handleSync = () => {
+      fetchProfile();
+    };
+    window.addEventListener('ba_realtime_personalprofile_changed', handleSync);
+    return () => window.removeEventListener('ba_realtime_personalprofile_changed', handleSync);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
@@ -110,11 +116,39 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({ token, onToast }) => {
         throw new Error(data.error || 'Failed to save profile');
       }
 
+      window.dispatchEvent(new CustomEvent('ba_realtime_personalprofile_changed'));
       onToast('Personal Profile updated successfully!', 'success');
     } catch (err: any) {
       onToast(err.message || 'Error updating profile', 'error');
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleAvatarChange = async (newUrl: string) => {
+    setProfile((prev) => ({ ...prev, avatarUrl: newUrl }));
+    if (!newUrl) return;
+
+    try {
+      const res = await fetch('/api/admin/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ avatarUrl: newUrl }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Failed to auto-save avatar');
+      }
+
+      window.dispatchEvent(new CustomEvent('ba_realtime_personalprofile_changed'));
+      onToast('Profile photo updated & saved live to website!', 'success');
+    } catch (err: any) {
+      console.error('Failed to auto-save avatar:', err);
+      onToast(err.message || 'Failed to save profile photo', 'error');
     }
   };
 
@@ -239,9 +273,9 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({ token, onToast }) => {
           <div className="md:col-span-2">
             <ImageUpload
               value={profile.avatarUrl}
-              onChange={(url) => setProfile({ ...profile, avatarUrl: url })}
+              onChange={handleAvatarChange}
               token={token}
-              label="Avatar / Profile Photo (Saved to Google Drive)"
+              label="Avatar / Profile Photo (Cloud Storage CDN)"
               aspectRatio="square"
               onToast={onToast}
             />

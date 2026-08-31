@@ -18,6 +18,7 @@ import {
   Database,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
+import { RealtimeStatus } from '@/hooks/useAdminRealtime';
 
 export type AdminTab =
   | 'overview'
@@ -38,6 +39,7 @@ interface AdminSidebarProps {
   onCloseMobile: () => void;
   onLogout: () => void;
   userEmail: string;
+  realtimeStatus?: RealtimeStatus;
 }
 
 export const AdminSidebar: React.FC<AdminSidebarProps> = ({
@@ -48,6 +50,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
   onCloseMobile,
   onLogout,
   userEmail,
+  realtimeStatus = 'connected',
 }) => {
   const navItems = [
     { id: 'overview' as AdminTab, label: 'Overview', icon: LayoutDashboard },
@@ -85,17 +88,31 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
         {/* Sidebar Header */}
         <div className="p-5 border-b border-surface-border flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500 text-white font-bold font-mono text-sm flex items-center justify-center shadow-md">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500 text-white font-bold font-mono text-sm flex items-center justify-center shadow-md shadow-purple-500/20">
               BA
             </div>
             <div>
               <h2 className="font-bold text-sm text-foreground tracking-tight leading-none">
                 Admin Operations
               </h2>
-              <span className="text-[11px] text-foreground/50 font-mono flex items-center gap-1 mt-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                PostgreSQL Live
-              </span>
+              <div className="flex items-center gap-1.5 mt-1.5">
+                <span
+                  className={`w-2 h-2 rounded-full ${
+                    realtimeStatus === 'connected'
+                      ? 'bg-emerald-400 animate-pulse shadow-sm shadow-emerald-400/50'
+                      : realtimeStatus === 'connecting'
+                      ? 'bg-amber-400 animate-ping'
+                      : 'bg-zinc-500'
+                  }`}
+                />
+                <span className="text-[10px] font-mono text-foreground/60 tracking-tight">
+                  {realtimeStatus === 'connected'
+                    ? 'WebSocket Live'
+                    : realtimeStatus === 'connecting'
+                    ? 'Connecting...'
+                    : 'Reconnecting'}
+                </span>
+              </div>
             </div>
           </div>
 

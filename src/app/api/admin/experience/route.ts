@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
 import { verifyAdminToken } from '@/lib/auth';
 
@@ -12,7 +13,15 @@ export async function GET(req: NextRequest) {
     const experience = await prisma.experience.findMany({
       orderBy: { order: 'asc' },
     });
-    return NextResponse.json({ success: true, data: experience });
+    return NextResponse.json(
+      { success: true, data: experience },
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+        },
+      }
+    );
   } catch (error) {
     console.error('❌ Failed to fetch experience:', error);
     return NextResponse.json({ success: false, error: 'Database error' }, { status: 500 });
@@ -48,6 +57,12 @@ export async function POST(req: NextRequest) {
         order: typeof order === 'number' ? order : 0,
       },
     });
+
+    try {
+      revalidatePath('/', 'page');
+      revalidatePath('/', 'layout');
+      revalidatePath('/admin');
+    } catch (e) {}
 
     return NextResponse.json({ success: true, data: item, message: 'Experience record created successfully' }, { status: 201 });
   } catch (error) {
@@ -87,6 +102,12 @@ export async function PUT(req: NextRequest) {
       },
     });
 
+    try {
+      revalidatePath('/', 'page');
+      revalidatePath('/', 'layout');
+      revalidatePath('/admin');
+    } catch (e) {}
+
     return NextResponse.json({ success: true, data: updated, message: 'Experience record updated successfully' });
   } catch (error) {
     console.error('❌ Failed to update experience:', error);
@@ -110,6 +131,12 @@ export async function DELETE(req: NextRequest) {
     await prisma.experience.delete({
       where: { id },
     });
+
+    try {
+      revalidatePath('/', 'page');
+      revalidatePath('/', 'layout');
+      revalidatePath('/admin');
+    } catch (e) {}
 
     return NextResponse.json({ success: true, message: 'Experience record deleted successfully' });
   } catch (error) {

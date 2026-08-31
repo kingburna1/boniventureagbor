@@ -44,8 +44,19 @@ export const ExperienceTab: React.FC<ExperienceTabProps> = ({ token, onToast }) 
 
   useEffect(() => {
     fetchExperience();
+
+    const handleRealtimeChange = () => {
+      if (!isEditing) {
+        fetchExperience();
+      }
+    };
+
+    window.addEventListener('ba_realtime_experience_changed', handleRealtimeChange);
+    return () => {
+      window.removeEventListener('ba_realtime_experience_changed', handleRealtimeChange);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+  }, [token, isEditing]);
 
   const fetchExperience = async () => {
     setIsLoading(true);

@@ -56,11 +56,11 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
 
       const data = await res.json();
       if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Failed to upload image to Google Drive');
+        throw new Error(data.error || 'Failed to upload image');
       }
 
       onChange(data.data.url);
-      onToast?.('Image uploaded to Google Drive!', 'success');
+      onToast?.('Image uploaded successfully!', 'success');
     } catch (err: any) {
       console.error('Upload error:', err);
       onToast?.(err.message || 'Failed to upload image', 'error');
@@ -101,7 +101,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
         >
           {isUrlMode ? (
             <>
-              <Cloud className="w-3 h-3" /> Upload file to Drive
+              <Cloud className="w-3 h-3" /> Upload file
             </>
           ) : (
             <>
@@ -117,7 +117,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
             type="url"
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            placeholder="https://images.unsplash.com/... or https://lh3.googleusercontent.com/..."
+            placeholder="https://images.unsplash.com/... or https://...supabase.co/..."
             className="w-full px-4 py-2 bg-surface border border-surface-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
           />
           {value && (
@@ -151,10 +151,10 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
                   className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
                 />
 
-                {/* Google Drive Verified Badge */}
-                {value.includes('googleusercontent.com') && (
+                {/* Cloud CDN Verified Badge */}
+                {(value.includes('supabase.co') || value.includes('googleusercontent.com')) && (
                   <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/75 backdrop-blur-md text-emerald-400 border border-emerald-500/30 text-[10px] font-mono flex items-center gap-1 shadow-sm">
-                    <Cloud className="w-3 h-3" /> Google Drive CDN
+                    <Cloud className="w-3 h-3" /> Cloud CDN
                   </div>
                 )}
 
@@ -202,7 +202,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
                 <div className="space-y-2 py-4 flex flex-col items-center">
                   <RefreshCw className="w-8 h-8 text-accent animate-spin" />
                   <p className="text-xs font-mono text-accent font-semibold">
-                    Uploading directly to Google Drive...
+                    Uploading directly to Cloud Storage CDN...
                   </p>
                   <p className="text-[11px] text-foreground/50 font-mono">
                     Generating high-speed public CDN stream
@@ -218,7 +218,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
                       Click to upload or drag &amp; drop
                     </p>
                     <p className="text-[11px] text-foreground/50 font-mono mt-0.5">
-                      PNG, JPG, WEBP, SVG up to 15MB &bull; Saved to Google Drive
+                      PNG, JPG, WEBP, SVG up to 15MB &bull; Saved to Cloud CDN
                     </p>
                   </div>
                 </div>

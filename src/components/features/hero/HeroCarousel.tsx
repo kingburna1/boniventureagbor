@@ -14,47 +14,69 @@ export interface CarouselImage {
 const DEFAULT_CAROUSEL_IMAGES: CarouselImage[] = [
   {
     id: '1',
-    url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80',
+    url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDWB9yqaW_iQQ2cuqPEZR9TFnSDWRv1-bqrZdFu-OqSA&s=10',
     alt: 'Abstract Digital Architecture & Fluid Design',
     caption: 'Full-Stack Platforms',
   },
   {
     id: '2',
-    url: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1000&q=80',
+    url: 'https://blogs.findingpi.com/wp-content/uploads/2022/03/UIUX-designing-1.jpg',
     alt: 'Interactive Design Systems & Code Interfaces',
     caption: 'UI/UX Design Systems',
   },
   {
     id: '3',
-    url: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1000&q=80',
+    url: 'https://weassemble.team/wp-content/uploads/2022/06/Rectangle-33-6.png',
     alt: 'High Performance Cloud Computing',
     caption: 'Scalable Systems',
   },
 ];
 
+
+
 export interface HeroCarouselProps {
+  avatarUrl?: string;
+  name?: string;
+  title?: string;
   images?: CarouselImage[];
   intervalMs?: number;
 }
 
 export const HeroCarousel: React.FC<HeroCarouselProps> = ({
+  avatarUrl,
+  name,
+  title,
   images = DEFAULT_CAROUSEL_IMAGES,
   intervalMs = 4000,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const shouldReduceMotion = useReducedMotion();
 
+  // Prepend personal profile avatar as slide 1 if provided
+  const displayImages: CarouselImage[] = React.useMemo(() => {
+    if (!avatarUrl) return images;
+    return [
+      {
+        id: 'profile-avatar',
+        url: avatarUrl,
+        alt: `${name || 'Boniventure Agbor'} — ${title || 'Full Stack Engineer'}`,
+        caption: title || 'Full-Stack Engineer',
+      },
+      ...images,
+    ];
+  }, [avatarUrl, images, name, title]);
+
   useEffect(() => {
-    if (shouldReduceMotion) return;
+    if (shouldReduceMotion || displayImages.length <= 1) return;
 
     const timer = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % displayImages.length);
     }, intervalMs);
 
     return () => clearInterval(timer);
-  }, [images.length, intervalMs, shouldReduceMotion]);
+  }, [displayImages.length, intervalMs, shouldReduceMotion]);
 
-  const activeImage = images[currentIndex];
+  const activeImage = displayImages[currentIndex] || displayImages[0];
 
   return (
     <motion.div
@@ -135,7 +157,7 @@ export const HeroCarousel: React.FC<HeroCarouselProps> = ({
 
         {/* Slide Indicators */}
         <div className="absolute bottom-3 right-4 z-20 flex items-center gap-1.5">
-          {images.map((img, idx) => (
+          {displayImages.map((img, idx) => (
             <button
               key={img.id}
               onClick={(e) => {

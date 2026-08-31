@@ -15,11 +15,19 @@ import { MaskedReveal } from '@/components/motion/MaskedReveal';
 import { containerStagger, fadeUp, cardEntrance, EASE_CINEMATIC } from '@/lib/motion';
 import { useTranslation } from '@/i18n/context';
 
+import { PersonalProfileData } from '@/types/personal';
+
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-export const HeroSection: React.FC = () => {
+export interface HeroSectionProps {
+  profile?: PersonalProfileData;
+}
+
+export const HeroSection: React.FC<HeroSectionProps> = ({
+  profile = PERSONAL_DATA,
+}) => {
   const shouldReduceMotion = useReducedMotion();
   const heroRef = useRef<HTMLElement>(null);
   const leftColRef = useRef<HTMLDivElement>(null);
@@ -65,12 +73,13 @@ export const HeroSection: React.FC = () => {
   }, [shouldReduceMotion]);
 
   // Localized stats labels mapping
-  const localizedStats = PERSONAL_DATA.stats.map((stat, i) => {
+  const statsList = profile?.stats?.length ? profile.stats : PERSONAL_DATA.stats;
+  const localizedStats = statsList.map((stat, i) => {
     let label = stat.label;
-    if (i === 0) label = dictionary.hero.stats.yearsExperience;
-    else if (i === 1) label = dictionary.hero.stats.appsBuilt;
-    else if (i === 2) label = dictionary.hero.stats.codeQuality;
-    else if (i === 3) label = dictionary.hero.stats.performanceScore;
+    if (i === 0 && dictionary.hero.stats.yearsExperience) label = dictionary.hero.stats.yearsExperience;
+    else if (i === 1 && dictionary.hero.stats.appsBuilt) label = dictionary.hero.stats.appsBuilt;
+    else if (i === 2 && dictionary.hero.stats.codeQuality) label = dictionary.hero.stats.codeQuality;
+    else if (i === 3 && dictionary.hero.stats.performanceScore) label = dictionary.hero.stats.performanceScore;
     return { ...stat, label };
   });
 
@@ -103,7 +112,7 @@ export const HeroSection: React.FC = () => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
               </span>
-              <Badge variant="accent">{dictionary.hero.availability}</Badge>
+              <Badge variant="accent">{profile?.availability || dictionary.hero.availability}</Badge>
             </motion.div>
 
             {/* 2. Primary Headline with Masked Line-Level Reveal */}
@@ -141,7 +150,7 @@ export const HeroSection: React.FC = () => {
               variants={fadeUp}
               className="text-base md:text-lg text-foreground/75 max-w-xl leading-relaxed mx-auto md:mx-0 font-normal"
             >
-              {dictionary.hero.bio}
+              {profile?.bio || dictionary.hero.bio}
             </motion.p>
 
             {/* 4. Action CTA Buttons with Restrained Micro-Interactions */}
@@ -183,7 +192,11 @@ export const HeroSection: React.FC = () => {
 
         {/* Right Column: Hero Visual Asset */}
         <div ref={rightColRef} className="lg:col-span-5 flex justify-center">
-          <HeroCarousel />
+          <HeroCarousel
+            avatarUrl={profile?.avatarUrl}
+            name={profile?.name}
+            title={profile?.title}
+          />
         </div>
       </div>
     </section>

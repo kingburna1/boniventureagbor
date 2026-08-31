@@ -9,13 +9,26 @@ import { PrincipleCard } from '@/components/features/about/PrincipleCard';
 import { containerStagger } from '@/lib/motion';
 import { useTranslation } from '@/i18n/context';
 
-export const AboutSection: React.FC = () => {
+import { PersonalProfileData } from '@/types/personal';
+import { PERSONAL_DATA } from '@/data/personalData';
+
+export interface AboutSectionProps {
+  profile?: PersonalProfileData;
+}
+
+export const AboutSection: React.FC<AboutSectionProps> = ({
+  profile = PERSONAL_DATA,
+}) => {
   const icons = [Lightbulb, ShieldCheck, Layers, Bot];
   const shouldReduceMotion = useReducedMotion();
   const { dictionary } = useTranslation();
 
+  const philosophyItems = profile?.philosophy?.length
+    ? profile.philosophy
+    : dictionary.about.philosophy;
+
   return (
-    <section id="about" className="py-24 px-4 md:px-8 bg-surface/20">
+    <section id="about" className="py-7 px-4 md:px-8 bg-surface/20">
       <div className="max-w-6xl mx-auto space-y-16">
         <SectionHeader
           badgeText={dictionary.about.badge}
@@ -24,7 +37,7 @@ export const AboutSection: React.FC = () => {
         />
 
         {/* Senior Designer Profile Narrative & Photo Sub-Section */}
-        <AboutProfileCard />
+        <AboutProfileCard profile={profile} />
 
         {/* Philosophy Grid */}
         <div className="space-y-6">
@@ -38,7 +51,7 @@ export const AboutSection: React.FC = () => {
             viewport={{ once: true, margin: '-40px' }}
             className="grid grid-cols-1 md:grid-cols-3 gap-6"
           >
-            {dictionary.about.philosophy.map((item, index) => {
+            {philosophyItems.map((item, index) => {
               const Icon = icons[index % icons.length];
               const isFullWidth = index === 3;
               return (

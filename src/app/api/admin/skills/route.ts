@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
 import { verifyAdminToken } from '@/lib/auth';
 
@@ -26,7 +27,15 @@ export async function GET(req: NextRequest) {
         },
       },
     });
-    return NextResponse.json({ success: true, data: categories });
+    return NextResponse.json(
+      { success: true, data: categories },
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+        },
+      }
+    );
   } catch (error) {
     console.error('❌ Failed to fetch skills:', error);
     return NextResponse.json({ success: false, error: 'Database error' }, { status: 500 });
@@ -58,6 +67,12 @@ export async function POST(req: NextRequest) {
         },
       });
 
+      try {
+        revalidatePath('/', 'page');
+        revalidatePath('/', 'layout');
+        revalidatePath('/admin');
+      } catch (e) {}
+
       return NextResponse.json({ success: true, data: category, message: 'Skill category created successfully' }, { status: 201 });
     }
 
@@ -75,6 +90,12 @@ export async function POST(req: NextRequest) {
         order: typeof order === 'number' ? order : 0,
       },
     });
+
+    try {
+      revalidatePath('/', 'page');
+      revalidatePath('/', 'layout');
+      revalidatePath('/admin');
+    } catch (e) {}
 
     return NextResponse.json({ success: true, data: skill, message: 'Skill added successfully' }, { status: 201 });
   } catch (error) {
@@ -107,6 +128,12 @@ export async function PUT(req: NextRequest) {
         },
       });
 
+      try {
+        revalidatePath('/', 'page');
+        revalidatePath('/', 'layout');
+        revalidatePath('/admin');
+      } catch (e) {}
+
       return NextResponse.json({ success: true, data: updatedCategory, message: 'Skill category updated successfully' });
     }
 
@@ -125,6 +152,12 @@ export async function PUT(req: NextRequest) {
         order: typeof order === 'number' ? order : 0,
       },
     });
+
+    try {
+      revalidatePath('/', 'page');
+      revalidatePath('/', 'layout');
+      revalidatePath('/admin');
+    } catch (e) {}
 
     return NextResponse.json({ success: true, data: updatedSkill, message: 'Skill updated successfully' });
   } catch (error) {
@@ -151,12 +184,26 @@ export async function DELETE(req: NextRequest) {
       await prisma.skillCategory.delete({
         where: { id },
       });
+
+      try {
+        revalidatePath('/', 'page');
+        revalidatePath('/', 'layout');
+        revalidatePath('/admin');
+      } catch (e) {}
+
       return NextResponse.json({ success: true, message: 'Category and its skills deleted successfully' });
     }
 
     await prisma.skill.delete({
       where: { id },
     });
+
+    try {
+      revalidatePath('/', 'page');
+      revalidatePath('/', 'layout');
+      revalidatePath('/admin');
+    } catch (e) {}
+
     return NextResponse.json({ success: true, message: 'Skill deleted successfully' });
   } catch (error) {
     console.error('❌ Failed to delete skill/category:', error);

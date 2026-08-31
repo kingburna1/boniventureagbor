@@ -150,8 +150,40 @@ async function ensureTables() {
     `CREATE UNIQUE INDEX IF NOT EXISTS "CaseStudy_projectId_key" ON "CaseStudy"("projectId")`,
   ];
 
+  // Retry warming up connection if pool is cold
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      await prisma.$queryRaw`SELECT 1`;
+      break;
+    } catch (err) {
+      if (attempt === 3) throw err;
+      console.log(`⏳ Database connection attempt ${attempt} failed, retrying in 2s...`);
+      await new Promise((r) => setTimeout(r, 2000));
+    }
+  }
+
   for (const sql of ddlStatements) {
     await prisma.$executeRawUnsafe(sql);
+  }
+
+  // Ensure PostgreSQL tables are registered with Supabase Realtime publication
+  const realtimeTables = [
+    'ContactMessage',
+    'Project',
+    'PersonalProfile',
+    'Experience',
+    'SkillCategory',
+    'Skill',
+    'Stat',
+    'Philosophy',
+  ];
+
+  for (const table of realtimeTables) {
+    try {
+      await prisma.$executeRawUnsafe(`ALTER PUBLICATION supabase_realtime ADD TABLE "${table}"`);
+    } catch (pubErr: any) {
+      // Ignored if table is already member of publication
+    }
   }
 }
 

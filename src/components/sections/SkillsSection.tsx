@@ -20,7 +20,7 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
   const { dictionary } = useTranslation();
 
   return (
-    <section id="skills" className="py-20 md:py-28 overflow-hidden">
+    <section id="skills" className="py-12 md:py-16 overflow-hidden">
       <motion.div
         variants={shouldReduceMotion ? undefined : containerStagger(0.08, 0.04)}
         initial={shouldReduceMotion ? undefined : 'hidden'}

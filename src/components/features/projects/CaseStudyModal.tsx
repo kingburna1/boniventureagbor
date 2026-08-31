@@ -111,31 +111,40 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
           </div>
         </motion.div>
 
-        {/* External Links */}
+        {/* External Links & Dual-Exit Actions */}
         <motion.div
           variants={fadeUp}
-          className="pt-6 border-t border-surface-border flex items-center gap-4"
+          className="pt-6 border-t border-surface-border flex flex-wrap items-center justify-between gap-4"
         >
-          {project.demoUrl && (
-            <Button
-              href={project.demoUrl}
-              isExternal
-              variant="primary"
-              icon={<ExternalLink className="w-4 h-4" />}
-            >
-              {dictionary.projects.caseStudy.liveDemo}
-            </Button>
-          )}
-          {project.githubUrl && (
-            <Button
-              href={project.githubUrl}
-              isExternal
-              variant="outline"
-              icon={<Github className="w-4 h-4" />}
-            >
-              {dictionary.projects.caseStudy.viewRepo}
-            </Button>
-          )}
+          <div className="flex flex-wrap items-center gap-3">
+            {project.demoUrl && (
+              <Button
+                href={project.demoUrl}
+                isExternal
+                variant="primary"
+                icon={<ExternalLink className="w-4 h-4" />}
+              >
+                {dictionary.projects.caseStudy.liveDemo}
+              </Button>
+            )}
+            {project.githubUrl && (
+              <Button
+                href={project.githubUrl}
+                isExternal
+                variant="outline"
+                icon={<Github className="w-4 h-4" />}
+              >
+                {dictionary.projects.caseStudy.viewRepo}
+              </Button>
+            )}
+          </div>
+
+          <Button
+            variant="secondary"
+            onClick={onClose}
+          >
+            {dictionary.projects.caseStudy.close || 'Close Case Study'}
+          </Button>
         </motion.div>
       </motion.div>
     </Modal>

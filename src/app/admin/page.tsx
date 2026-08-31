@@ -14,6 +14,7 @@ import {
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { AdminSidebar, AdminTab } from '@/components/admin/AdminSidebar';
+import { useAdminRealtime } from '@/hooks/useAdminRealtime';
 import { OverviewTab } from '@/components/admin/tabs/OverviewTab';
 import { ProfileTab } from '@/components/admin/tabs/ProfileTab';
 import { StatsTab } from '@/components/admin/tabs/StatsTab';
@@ -48,6 +49,29 @@ export default function AdminPage() {
     skillsCount: number;
   } | null>(null);
 
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 4000);
+  };
+
+  // ⚡ Supabase WebSocket Real-Time Subscription Hook
+  const { status: realtimeStatus } = useAdminRealtime({
+    enabled: isAuthenticated,
+    onToast: showToast,
+    onDataChanged: () => {
+      if (token) fetchStats();
+    },
+    onNewMessage: () => {
+      if (token) fetchStats();
+    },
+    onMessageUpdated: () => {
+      if (token) fetchStats();
+    },
+    onMessageDeleted: () => {
+      if (token) fetchStats();
+    },
+  });
+
   // Check existing session token on mount
   useEffect(() => {
     const savedToken = localStorage.getItem('ba_admin_token');
@@ -59,10 +83,16 @@ export default function AdminPage() {
     }
   }, []);
 
-  // Fetch KPI stats when authenticated
+  // Fetch KPI stats when authenticated and listen to custom refresh events
   useEffect(() => {
     if (isAuthenticated && token) {
       fetchStats();
+
+      const handleRefresh = () => fetchStats();
+      window.addEventListener('ba_realtime_refresh_stats', handleRefresh);
+      return () => {
+        window.removeEventListener('ba_realtime_refresh_stats', handleRefresh);
+      };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, token]);
@@ -81,11 +111,6 @@ export default function AdminPage() {
     } catch (err) {
       console.error('Failed to fetch stats:', err);
     }
-  };
-
-  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
-    setToast({ message, type });
-    setTimeout(() => setToast(null), 4000);
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -232,6 +257,7 @@ export default function AdminPage() {
         onCloseMobile={() => setIsOpenMobile(false)}
         onLogout={handleLogout}
         userEmail={userEmail}
+        realtimeStatus={realtimeStatus}
       />
 
       {/* Main Content Workspace */}

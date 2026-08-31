@@ -7,9 +7,20 @@ import { PERSONAL_DATA } from '@/data/personalData';
 import { SocialLinks } from './SocialLinks';
 import { useTranslation } from '@/i18n/context';
 
-export const Footer: React.FC = () => {
+import { PersonalProfileData } from '@/types/personal';
+
+export interface FooterProps {
+  profile?: PersonalProfileData;
+}
+
+export const Footer: React.FC<FooterProps> = ({
+  profile = PERSONAL_DATA,
+}) => {
   const { dictionary } = useTranslation();
   const shouldReduceMotion = useReducedMotion();
+
+  const name = profile?.name || PERSONAL_DATA.name;
+  const socials = profile?.socials || PERSONAL_DATA.socials;
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -31,7 +42,7 @@ export const Footer: React.FC = () => {
             transition={{ duration: 0.2 }}
             className="inline-block font-mono font-bold text-foreground hover:text-accent transition-colors"
           >
-            {PERSONAL_DATA.name}
+            {name}
           </motion.a>
           <p className="text-xs text-foreground/60 mt-1">
             {dictionary.footer.tagline}
@@ -39,11 +50,11 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Social Icons with subtle motion */}
-        <SocialLinks socials={PERSONAL_DATA.socials} />
+        <SocialLinks socials={socials} />
 
         <div className="flex items-center gap-4 text-xs text-foreground/50 font-mono">
           <p>
-            © {new Date().getFullYear()} {PERSONAL_DATA.name}. {dictionary.footer.rights}
+            © {new Date().getFullYear()} {name}. {dictionary.footer.rights}
           </p>
           <motion.button
             onClick={scrollToTop}

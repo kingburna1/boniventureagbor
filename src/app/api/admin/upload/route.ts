@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyAdminToken } from '@/lib/auth';
-import { uploadToGoogleDrive } from '@/lib/googleDrive';
+import { uploadToSupabaseStorage } from '@/lib/supabaseStorage';
 
 export async function POST(req: NextRequest) {
   if (!verifyAdminToken(req)) {
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const uploadResult = await uploadToGoogleDrive({
+    const uploadResult = await uploadToSupabaseStorage({
       buffer,
       fileName: file.name,
       mimeType: file.type || 'image/jpeg',
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        message: 'File successfully uploaded to Google Drive!',
+        message: 'File successfully uploaded to Supabase Storage!',
         data: {
           url: uploadResult.directUrl,
           fileId: uploadResult.fileId,
@@ -55,9 +55,9 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error: any) {
-    console.error('❌ Google Drive Upload Error:', error);
+    console.error('❌ Supabase Storage Upload Error:', error);
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to upload file to Google Drive.' },
+      { success: false, error: error.message || 'Failed to upload file to Supabase Storage.' },
       { status: 500 }
     );
   }

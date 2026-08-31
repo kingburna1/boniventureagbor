@@ -17,7 +17,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   const { dictionary } = useTranslation();
 
   return (
-    <section id="experience" className="pt-12 md:pt-16 pb-16 md:pb-20 px-4 md:px-8 bg-surface/10">
+    <section id="experience" className="pt-12 md:pt-16 pb-16 md:pb-16 px-4 md:px-8 bg-surface/10">
       <div className="max-w-6xl mx-auto space-y-4 md:space-y-6">
         <SectionHeader
           badgeText={dictionary.experience.badge}

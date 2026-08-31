@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
 import { verifyAdminToken } from '@/lib/auth';
 
@@ -12,7 +13,15 @@ export async function GET(req: NextRequest) {
     const stats = await prisma.stat.findMany({
       orderBy: { order: 'asc' },
     });
-    return NextResponse.json({ success: true, data: stats });
+    return NextResponse.json(
+      { success: true, data: stats },
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+        },
+      }
+    );
   } catch (error) {
     console.error('❌ Failed to fetch stats:', error);
     return NextResponse.json({ success: false, error: 'Database error' }, { status: 500 });
@@ -39,6 +48,12 @@ export async function POST(req: NextRequest) {
         order: typeof order === 'number' ? order : 0,
       },
     });
+
+    try {
+      revalidatePath('/', 'page');
+      revalidatePath('/', 'layout');
+      revalidatePath('/admin');
+    } catch (e) {}
 
     return NextResponse.json({ success: true, data: stat, message: 'Stat created successfully' }, { status: 201 });
   } catch (error) {
@@ -69,6 +84,12 @@ export async function PUT(req: NextRequest) {
       },
     });
 
+    try {
+      revalidatePath('/', 'page');
+      revalidatePath('/', 'layout');
+      revalidatePath('/admin');
+    } catch (e) {}
+
     return NextResponse.json({ success: true, data: updated, message: 'Stat updated successfully' });
   } catch (error) {
     console.error('❌ Failed to update stat:', error);
@@ -92,6 +113,12 @@ export async function DELETE(req: NextRequest) {
     await prisma.stat.delete({
       where: { id },
     });
+
+    try {
+      revalidatePath('/', 'page');
+      revalidatePath('/', 'layout');
+      revalidatePath('/admin');
+    } catch (e) {}
 
     return NextResponse.json({ success: true, message: 'Stat deleted successfully' });
   } catch (error) {

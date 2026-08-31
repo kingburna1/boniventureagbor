@@ -84,8 +84,20 @@ export const ProjectsTab: React.FC<ProjectsTabProps> = ({ token, onToast }) => {
 
   useEffect(() => {
     fetchProjects();
+
+    const handleRealtimeChange = () => {
+      // Only auto-refetch if not currently editing in modal
+      if (!isEditing) {
+        fetchProjects();
+      }
+    };
+
+    window.addEventListener('ba_realtime_projects_changed', handleRealtimeChange);
+    return () => {
+      window.removeEventListener('ba_realtime_projects_changed', handleRealtimeChange);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+  }, [token, isEditing]);
 
   const fetchProjects = async () => {
     setIsLoading(true);
@@ -486,7 +498,7 @@ export const ProjectsTab: React.FC<ProjectsTabProps> = ({ token, onToast }) => {
                       value={imageUrl}
                       onChange={setImageUrl}
                       token={token}
-                      label="Project Cover Image (Saved to Google Drive)"
+                      label="Project Cover Image (Cloud Storage CDN)"
                       aspectRatio="video"
                       onToast={onToast}
                       required

@@ -42,20 +42,20 @@ export default async function Home() {
       <MouseSpotlight />
 
       {/* Sticky Header & Navbar */}
-      <Header resumeUrl={profile.resumeUrl} />
+      <Header resumeUrl={profile.resumeUrl} name={profile.name} />
 
       {/* Main Single Page Sections */}
       <main className="relative z-10">
-        <HeroSection />
-        <AboutSection />
+        <HeroSection profile={profile} />
+        <AboutSection profile={profile} />
         <ProjectsSection projects={projects} />
         <ExperienceSection items={experience} />
         <SkillsSection categories={skills} />
-        <ContactSection />
+        <ContactSection profile={profile} />
       </main>
 
       {/* Footer */}
-      <Footer />
+      <Footer profile={profile} />
     </div>
   );
 }

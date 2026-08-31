@@ -58,8 +58,21 @@ export const SkillsTab: React.FC<SkillsTabProps> = ({ token, onToast }) => {
 
   useEffect(() => {
     fetchSkills();
+
+    const handleRealtimeChange = () => {
+      if (!isCatModalOpen && !isSkillModalOpen) {
+        fetchSkills();
+      }
+    };
+
+    window.addEventListener('ba_realtime_skill_changed', handleRealtimeChange);
+    window.addEventListener('ba_realtime_skillcategory_changed', handleRealtimeChange);
+    return () => {
+      window.removeEventListener('ba_realtime_skill_changed', handleRealtimeChange);
+      window.removeEventListener('ba_realtime_skillcategory_changed', handleRealtimeChange);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
+  }, [token, isCatModalOpen, isSkillModalOpen]);
 
   const fetchSkills = async () => {
     setIsLoading(true);

@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
 import { verifyAdminToken } from '@/lib/auth';
 
@@ -22,7 +23,15 @@ export async function GET(req: NextRequest) {
       orderBy: { order: 'asc' },
       include: { caseStudy: true },
     });
-    return NextResponse.json({ success: true, data: projects });
+    return NextResponse.json(
+      { success: true, data: projects },
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+        },
+      }
+    );
   } catch (error) {
     console.error('❌ Failed to fetch projects:', error);
     return NextResponse.json({ success: false, error: 'Database error' }, { status: 500 });
@@ -99,6 +108,12 @@ export async function POST(req: NextRequest) {
       where: { id: createdProject.id },
       include: { caseStudy: true },
     });
+
+    try {
+      revalidatePath('/', 'page');
+      revalidatePath('/', 'layout');
+      revalidatePath('/admin');
+    } catch (e) {}
 
     return NextResponse.json({ success: true, data: fullProject, message: 'Project created successfully' }, { status: 201 });
   } catch (error) {
@@ -181,6 +196,12 @@ export async function PUT(req: NextRequest) {
       include: { caseStudy: true },
     });
 
+    try {
+      revalidatePath('/', 'page');
+      revalidatePath('/', 'layout');
+      revalidatePath('/admin');
+    } catch (e) {}
+
     return NextResponse.json({ success: true, data: fullProject, message: 'Project updated successfully' });
   } catch (error) {
     console.error('❌ Failed to update project:', error);
@@ -204,6 +225,12 @@ export async function DELETE(req: NextRequest) {
     await prisma.project.delete({
       where: { id },
     });
+
+    try {
+      revalidatePath('/', 'page');
+      revalidatePath('/', 'layout');
+      revalidatePath('/admin');
+    } catch (e) {}
 
     return NextResponse.json({ success: true, message: 'Project and case study deleted successfully' });
   } catch (error) {

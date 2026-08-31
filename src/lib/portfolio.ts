@@ -6,11 +6,12 @@ import { SKILLS_DATA } from '@/data/skillsData';
 import { Project, ProjectCategory } from '@/types/project';
 import { ExperienceItem } from '@/types/experience';
 import { SkillCategory } from '@/types/skill';
+import { PersonalProfileData } from '@/types/personal';
 
 /**
  * Timeout wrapper ensuring database latency never blocks page compilation or ISR rendering
  */
-async function withTimeout<T>(promise: Promise<T>, timeoutMs: number = 1500): Promise<T> {
+async function withTimeout<T>(promise: Promise<T>, timeoutMs: number = 10000): Promise<T> {
   let timer: NodeJS.Timeout;
   const timeoutPromise = new Promise<never>((_, reject) => {
     timer = setTimeout(() => reject(new Error(`Query timed out after ${timeoutMs}ms`)), timeoutMs);
@@ -18,7 +19,7 @@ async function withTimeout<T>(promise: Promise<T>, timeoutMs: number = 1500): Pr
   return Promise.race([promise, timeoutPromise]).finally(() => clearTimeout(timer));
 }
 
-export async function getProfileData() {
+export async function getProfileData(): Promise<PersonalProfileData> {
   try {
     const profile = await withTimeout(
       prisma.personalProfile.findFirst({
@@ -41,28 +42,39 @@ export async function getProfileData() {
     if (!profile) return PERSONAL_DATA;
 
     return {
-      name: profile.name,
-      title: profile.title,
-      bio: profile.bio,
-      availability: profile.availability,
-      location: profile.location,
-      email: profile.email,
-      resumeUrl: profile.resumeUrl,
+      name: profile.name || PERSONAL_DATA.name,
+      title: profile.title || PERSONAL_DATA.title,
+      bio: profile.bio || PERSONAL_DATA.bio,
+      avatarUrl: profile.avatarUrl || PERSONAL_DATA.avatarUrl,
+      availability: profile.availability || PERSONAL_DATA.availability,
+      location: profile.location || PERSONAL_DATA.location,
+      email: profile.email || PERSONAL_DATA.email,
+      resumeUrl: profile.resumeUrl || PERSONAL_DATA.resumeUrl,
       aboutMe: {
-        leadParagraph: profile.leadParagraph,
-        bodyParagraph: profile.bodyParagraph,
-        highlights: profile.highlights,
+        leadParagraph: profile.leadParagraph || PERSONAL_DATA.aboutMe.leadParagraph,
+        bodyParagraph: profile.bodyParagraph || PERSONAL_DATA.aboutMe.bodyParagraph,
+        highlights:
+          Array.isArray(profile.highlights) && profile.highlights.length > 0
+            ? profile.highlights
+            : PERSONAL_DATA.aboutMe.highlights,
       },
       socials: {
-        github: profile.githubUrl,
-        linkedin: profile.linkedinUrl,
-        twitter: profile.twitterUrl,
-        figma: profile.figmaUrl,
+        github: profile.githubUrl || PERSONAL_DATA.socials.github,
+        linkedin: profile.linkedinUrl || PERSONAL_DATA.socials.linkedin,
+        twitter: profile.twitterUrl || PERSONAL_DATA.socials.twitter,
+        figma: profile.figmaUrl || PERSONAL_DATA.socials.figma,
       },
-      stats: stats.length > 0 ? stats.map((s) => ({ label: s.label, value: s.value })) : PERSONAL_DATA.stats,
-      philosophy: philosophy.length > 0 ? philosophy.map((p) => ({ title: p.title, description: p.description })) : PERSONAL_DATA.philosophy,
+      stats:
+        stats.length > 0
+          ? stats.map((s) => ({ label: s.label, value: s.value }))
+          : PERSONAL_DATA.stats,
+      philosophy:
+        philosophy.length > 0
+          ? philosophy.map((p) => ({ title: p.title, description: p.description }))
+          : PERSONAL_DATA.philosophy,
     };
   } catch (error) {
+    console.warn('Note: Using fallback personal data due to:', error);
     return PERSONAL_DATA;
   }
 }

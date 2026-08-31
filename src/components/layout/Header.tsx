@@ -20,10 +20,12 @@ const MobileMenu = dynamic(
 
 export interface HeaderProps {
   resumeUrl?: string;
+  name?: string;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   resumeUrl = PERSONAL_DATA.resumeUrl,
+  name = PERSONAL_DATA.name,
 }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const activeId = useScrollspy(NAV_ITEMS.map((item) => item.id));
@@ -56,7 +58,7 @@ export const Header: React.FC<HeaderProps> = ({
           <span className="w-8 h-8 rounded-lg bg-accent text-white flex items-center justify-center font-bold text-sm shadow-sm">
             BA
           </span>
-          <span>Boniventure<span className="text-accent">.dev</span></span>
+          <span>Boniventure</span>
         </a>
 
         {/* Desktop Navbar */}

@@ -45,6 +45,47 @@ export const MessagesTab: React.FC<MessagesTabProps> = ({
 
   useEffect(() => {
     fetchMessages();
+
+    // Listen for WebSocket real-time message events
+    const handleInsert = (e: any) => {
+      const newMsg = e.detail;
+      if (!newMsg) return;
+      setMessages((prev) => {
+        if (prev.some((m) => m.id === newMsg.id)) return prev;
+        return [newMsg, ...prev];
+      });
+      onRefreshStats();
+    };
+
+    const handleUpdate = (e: any) => {
+      const updated = e.detail;
+      if (!updated) return;
+      setMessages((prev) =>
+        prev.map((m) => (m.id === updated.id ? { ...m, ...updated } : m))
+      );
+      setSelectedMessage((prev) =>
+        prev && prev.id === updated.id ? { ...prev, ...updated } : prev
+      );
+      onRefreshStats();
+    };
+
+    const handleDelete = (e: any) => {
+      const { id } = e.detail || {};
+      if (!id) return;
+      setMessages((prev) => prev.filter((m) => m.id !== id));
+      setSelectedMessage((prev) => (prev && prev.id === id ? null : prev));
+      onRefreshStats();
+    };
+
+    window.addEventListener('ba_realtime_message_insert', handleInsert);
+    window.addEventListener('ba_realtime_message_update', handleUpdate);
+    window.addEventListener('ba_realtime_message_delete', handleDelete);
+
+    return () => {
+      window.removeEventListener('ba_realtime_message_insert', handleInsert);
+      window.removeEventListener('ba_realtime_message_update', handleUpdate);
+      window.removeEventListener('ba_realtime_message_delete', handleDelete);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 

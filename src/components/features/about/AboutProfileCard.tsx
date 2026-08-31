@@ -10,9 +10,29 @@ import { CopyEmailButton } from '../contact/CopyEmailButton';
 import { EASE_CINEMATIC, fadeUp, containerStagger } from '@/lib/motion';
 import { useTranslation } from '@/i18n/context';
 
-export const AboutProfileCard: React.FC = () => {
+import { PersonalProfileData } from '@/types/personal';
+
+export interface AboutProfileCardProps {
+  profile?: PersonalProfileData;
+}
+
+export const AboutProfileCard: React.FC<AboutProfileCardProps> = ({
+  profile = PERSONAL_DATA,
+}) => {
   const shouldReduceMotion = useReducedMotion();
   const { dictionary, locale } = useTranslation();
+
+  const avatarUrl = profile?.avatarUrl || PERSONAL_DATA.avatarUrl;
+  const resumeUrl = profile?.resumeUrl || PERSONAL_DATA.resumeUrl;
+  const name = profile?.name || PERSONAL_DATA.name;
+  const email = profile?.email || PERSONAL_DATA.email;
+  const location = profile?.location || dictionary.about.location;
+  const leadParagraph = profile?.aboutMe?.leadParagraph || dictionary.about.leadParagraph;
+  const bodyParagraph = profile?.aboutMe?.bodyParagraph || dictionary.about.bodyParagraph;
+  const highlights =
+    profile?.aboutMe?.highlights?.length > 0
+      ? profile.aboutMe.highlights
+      : dictionary.about.highlights;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-16">
@@ -36,11 +56,12 @@ export const AboutProfileCard: React.FC = () => {
           >
             <div className="relative aspect-[4/5] rounded-xl overflow-hidden bg-surface-border">
               <Image
-                src={PERSONAL_DATA.avatarUrl}
-                alt={PERSONAL_DATA.name}
+                src={avatarUrl}
+                alt={name}
                 fill
                 sizes="(max-width: 768px) 100vw, 400px"
                 className="object-cover group-hover:scale-102 transition-transform duration-700 ease-out"
+                priority
               />
 
               {/* Gradient Vignette Overlay */}
@@ -53,7 +74,7 @@ export const AboutProfileCard: React.FC = () => {
                     <Award className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-foreground">{PERSONAL_DATA.name}</p>
+                    <p className="text-xs font-bold text-foreground">{name}</p>
                     <p className="text-[10px] font-mono text-accent">{dictionary.about.verifiedDev}</p>
                   </div>
                 </div>
@@ -86,13 +107,13 @@ export const AboutProfileCard: React.FC = () => {
           variants={fadeUp}
           className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-bold text-foreground tracking-tight leading-[1.25]"
         >
-          {dictionary.about.leadParagraph}
+          {leadParagraph}
         </motion.h3>
 
         {/* 3. Highlighted CV Action */}
         <motion.div variants={fadeUp} className="pt-1">
           <a
-            href={PERSONAL_DATA.resumeUrl}
+            href={resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 text-2xl sm:text-3xl md:text-4xl font-bold text-lime-500 dark:text-[#bef264] hover:text-lime-600 dark:hover:text-[#d9f99d] underline underline-offset-8 decoration-[3px] decoration-lime-500 dark:decoration-[#bef264] transition-all group"
@@ -107,12 +128,12 @@ export const AboutProfileCard: React.FC = () => {
           variants={fadeUp}
           className="text-base md:text-lg text-foreground/75 leading-relaxed font-normal pt-2"
         >
-          {dictionary.about.bodyParagraph}
+          {bodyParagraph}
         </motion.p>
 
         {/* 5. Core Expertise Bullet Points with Independent Tactile Hover States */}
         <motion.div variants={fadeUp} className="space-y-3 pt-2">
-          {dictionary.about.highlights.map((item, index) => (
+          {highlights.map((item, index) => (
             <motion.div
               key={index}
               whileHover={
@@ -146,10 +167,10 @@ export const AboutProfileCard: React.FC = () => {
             className="flex items-center gap-2.5 text-xs font-mono text-foreground/80 bg-surface/80 hover:bg-surface px-3.5 py-2.5 rounded-xl border border-surface-border hover:border-accent/50 shadow-sm hover:shadow-md transition-all duration-200 cursor-default group select-none"
           >
             <MapPin className="w-4 h-4 text-accent group-hover:scale-110 transition-transform duration-200" />
-            <span className="group-hover:text-foreground font-medium transition-colors">{dictionary.about.location}</span>
+            <span className="group-hover:text-foreground font-medium transition-colors">{location}</span>
           </motion.div>
 
-          <CopyEmailButton email={PERSONAL_DATA.email} />
+          <CopyEmailButton email={email} />
         </motion.div>
       </motion.div>
     </div>

@@ -12,9 +12,22 @@ import { SocialLinks } from '@/components/layout/SocialLinks';
 import { containerStagger, cardEntrance } from '@/lib/motion';
 import { useTranslation } from '@/i18n/context';
 
-export const ContactSection: React.FC = () => {
+import { PersonalProfileData } from '@/types/personal';
+
+export interface ContactSectionProps {
+  profile?: PersonalProfileData;
+}
+
+export const ContactSection: React.FC<ContactSectionProps> = ({
+  profile = PERSONAL_DATA,
+}) => {
   const shouldReduceMotion = useReducedMotion();
   const { dictionary } = useTranslation();
+
+  const email = profile?.email || PERSONAL_DATA.email;
+  const location = profile?.location || dictionary.about.location;
+  const availability = profile?.availability || dictionary.hero.availability;
+  const socials = profile?.socials || PERSONAL_DATA.socials;
 
   return (
     <section id="contact" className="py-24 px-4 md:px-8 bg-surface/20">
@@ -49,7 +62,7 @@ export const ContactSection: React.FC = () => {
                   </div>
                   <div>
                     <p className="text-xs font-mono text-foreground/50">{dictionary.contact.directEmail}</p>
-                    <p className="font-medium text-foreground">{PERSONAL_DATA.email}</p>
+                    <p className="font-medium text-foreground">{email}</p>
                   </div>
                 </div>
 
@@ -59,7 +72,7 @@ export const ContactSection: React.FC = () => {
                   </div>
                   <div>
                     <p className="text-xs font-mono text-foreground/50">{dictionary.contact.locationLabel}</p>
-                    <p className="font-medium text-foreground">{dictionary.about.location}</p>
+                    <p className="font-medium text-foreground">{location}</p>
                   </div>
                 </div>
 
@@ -69,16 +82,16 @@ export const ContactSection: React.FC = () => {
                   </div>
                   <div>
                     <p className="text-xs font-mono text-foreground/50">{dictionary.contact.availabilityLabel}</p>
-                    <p className="font-medium text-foreground">{dictionary.hero.availability}</p>
+                    <p className="font-medium text-foreground">{availability}</p>
                   </div>
                 </div>
               </div>
 
               <div className="pt-4 border-t border-surface-border space-y-4">
-                <CopyEmailButton email={PERSONAL_DATA.email} />
+                <CopyEmailButton email={email} />
                 <div className="pt-2">
                   <p className="text-xs font-mono text-foreground/50 mb-2">{dictionary.contact.connectSocials}</p>
-                  <SocialLinks socials={PERSONAL_DATA.socials} />
+                  <SocialLinks socials={socials} />
                 </div>
               </div>
             </Card>

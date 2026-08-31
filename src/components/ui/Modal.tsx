@@ -27,10 +27,11 @@ export const Modal: React.FC<ModalProps> = ({
       const prevOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
       // Auto-focus close button for keyboard accessibility
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         closeButtonRef.current?.focus();
-      }, 50);
+      }, 60);
       return () => {
+        clearTimeout(timer);
         document.body.style.overflow = prevOverflow;
       };
     }
@@ -53,42 +54,64 @@ export const Modal: React.FC<ModalProps> = ({
         <div
           role="dialog"
           aria-modal="true"
-          aria-label={title || 'Case Study Modal'}
-          className="fixed inset-0 z-50 overflow-hidden flex justify-end"
+          aria-label={title || 'Case Study Dialog'}
+          className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-3 sm:p-6 md:p-8"
         >
-          {/* Backdrop */}
+          {/* Backdrop with Deep Cinematic Blur */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
+            className="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity"
             aria-hidden="true"
           />
 
-          {/* Slide-over Drawer Content */}
+          {/* Centered Glass Dialog Window */}
           <motion.div
-            initial={{ x: shouldReduceMotion ? 0 : '100%', opacity: shouldReduceMotion ? 0 : 1 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: shouldReduceMotion ? 0 : '100%', opacity: shouldReduceMotion ? 0 : 1 }}
-            transition={{ duration: 0.4, ease: EASE_CINEMATIC }}
-            className="relative w-full max-w-2xl bg-surface border-l border-surface-border h-full shadow-2xl overflow-y-auto z-10 flex flex-col"
+            initial={
+              shouldReduceMotion
+                ? { opacity: 0 }
+                : { opacity: 0, scale: 0.96, y: 16 }
+            }
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={
+              shouldReduceMotion
+                ? { opacity: 0 }
+                : { opacity: 0, scale: 0.96, y: 12 }
+            }
+            transition={{ duration: 0.3, ease: EASE_CINEMATIC }}
+            className="relative w-full max-w-3xl max-h-[88vh] bg-surface border border-surface-border rounded-2xl shadow-2xl backdrop-blur-2xl flex flex-col z-10 my-auto overflow-hidden"
           >
-            {/* Drawer Header */}
-            <div className="sticky top-0 bg-surface/90 backdrop-blur-md border-b border-surface-border px-6 py-4 flex items-center justify-between z-20">
-              <h3 className="text-xl font-bold text-foreground">{title}</h3>
+            {/* Modal Header Bar with Floating High-Contrast Close Trigger */}
+            <div className="sticky top-0 bg-surface/95 backdrop-blur-xl border-b border-surface-border px-5 sm:px-7 py-4 flex items-center justify-between gap-4 z-20 shrink-0">
+              <div className="flex-1 min-w-0">
+                <span className="text-[11px] font-mono uppercase text-accent font-semibold tracking-wider block mb-0.5">
+                  Case Study &amp; Technical Deep-Dive
+                </span>
+                <h3 className="text-base sm:text-lg md:text-xl font-bold text-foreground truncate tracking-tight">
+                  {title}
+                </h3>
+              </div>
+
               <button
                 ref={closeButtonRef}
                 onClick={onClose}
-                className="p-2 rounded-lg text-foreground/70 hover:text-foreground hover:bg-surface-border/50 transition-colors focus:outline-none focus:ring-2 focus:ring-accent"
-                aria-label="Close drawer"
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-border/60 hover:bg-surface-border text-foreground hover:text-accent border border-surface-border text-xs font-mono font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-accent shadow-sm shrink-0 group cursor-pointer"
+                aria-label="Close dialog"
               >
-                <X className="w-5 h-5" />
+                <span>Close</span>
+                <span className="hidden sm:inline-block px-1.5 py-0.5 rounded bg-background/90 text-[10px] text-foreground/60 border border-surface-border/60 font-mono">
+                  ESC
+                </span>
+                <X className="w-4 h-4 text-foreground/70 group-hover:text-accent transition-colors" />
               </button>
             </div>
 
-            {/* Drawer Body */}
-            <div className="p-6 md:p-8 flex-1">{children}</div>
+            {/* Scrollable Modal Content Body */}
+            <div className="p-5 sm:p-7 md:p-8 overflow-y-auto flex-1 overscroll-contain">
+              {children}
+            </div>
           </motion.div>
         </div>
       )}

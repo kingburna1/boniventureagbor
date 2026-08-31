@@ -39,6 +39,12 @@ export const ResumeTab: React.FC<ResumeTabProps> = ({ token, onToast }) => {
 
   useEffect(() => {
     fetchResume();
+
+    const handleSync = () => {
+      fetchResume();
+    };
+    window.addEventListener('ba_realtime_personalprofile_changed', handleSync);
+    return () => window.removeEventListener('ba_realtime_personalprofile_changed', handleSync);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
@@ -83,7 +89,7 @@ export const ResumeTab: React.FC<ResumeTabProps> = ({ token, onToast }) => {
 
     setIsUploading(true);
     try {
-      // 1. Upload file buffer directly to Google Drive
+      // 1. Upload file buffer directly to Cloud Storage CDN
       const formData = new FormData();
       formData.append('file', file);
 
@@ -97,7 +103,7 @@ export const ResumeTab: React.FC<ResumeTabProps> = ({ token, onToast }) => {
 
       const uploadData = await uploadRes.json();
       if (!uploadRes.ok || !uploadData.success) {
-        throw new Error(uploadData.error || 'Failed to upload resume to Google Drive');
+        throw new Error(uploadData.error || 'Failed to upload resume');
       }
 
       const uploadedUrl = uploadData.data.url;
@@ -120,7 +126,8 @@ export const ResumeTab: React.FC<ResumeTabProps> = ({ token, onToast }) => {
       setResumeUrl(uploadedUrl);
       setCustomUrl(uploadedUrl);
       setLastUpdated(new Date().toISOString());
-      onToast('Resume uploaded to Google Drive & activated on site!', 'success');
+      window.dispatchEvent(new CustomEvent('ba_realtime_personalprofile_changed'));
+      onToast('Resume uploaded & activated on site!', 'success');
     } catch (err: any) {
       console.error('Resume upload error:', err);
       onToast(err.message || 'Error uploading resume', 'error');
@@ -154,6 +161,7 @@ export const ResumeTab: React.FC<ResumeTabProps> = ({ token, onToast }) => {
 
       setResumeUrl(customUrl.trim());
       setLastUpdated(new Date().toISOString());
+      window.dispatchEvent(new CustomEvent('ba_realtime_personalprofile_changed'));
       onToast('Resume URL updated successfully!', 'success');
     } catch (err: any) {
       onToast(err.message || 'Error updating resume URL', 'error');
@@ -178,6 +186,7 @@ export const ResumeTab: React.FC<ResumeTabProps> = ({ token, onToast }) => {
 
       setResumeUrl('#');
       setCustomUrl('#');
+      window.dispatchEvent(new CustomEvent('ba_realtime_personalprofile_changed'));
       onToast('Resume link removed from site navigation', 'success');
     } catch (err: any) {
       onToast(err.message || 'Error removing resume', 'error');
@@ -192,7 +201,10 @@ export const ResumeTab: React.FC<ResumeTabProps> = ({ token, onToast }) => {
     onToast('Resume link copied to clipboard!', 'success');
   };
 
-  const isDriveHosted = resumeUrl.includes('googleusercontent.com') || resumeUrl.includes('drive.google.com');
+  const isCloudHosted =
+    resumeUrl.includes('supabase.co') ||
+    resumeUrl.includes('googleusercontent.com') ||
+    resumeUrl.includes('drive.google.com');
   const hasActiveResume = resumeUrl && resumeUrl !== '#';
 
   return (
@@ -201,7 +213,7 @@ export const ResumeTab: React.FC<ResumeTabProps> = ({ token, onToast }) => {
         <div>
           <h1 className="text-2xl font-bold text-foreground">Resume &amp; CV Management</h1>
           <p className="text-xs text-foreground/60 mt-1">
-            Upload new PDF versions to Google Drive or connect an external document link.
+            Upload new PDF versions to Cloud Storage CDN or connect an external document link.
           </p>
         </div>
 
@@ -250,9 +262,9 @@ export const ResumeTab: React.FC<ResumeTabProps> = ({ token, onToast }) => {
                     <div className="flex items-center justify-between">
                       <span className="text-foreground/50">Hosting Provider:</span>
                       <span className="font-bold flex items-center gap-1 text-emerald-400">
-                        {isDriveHosted ? (
+                        {isCloudHosted ? (
                           <>
-                            <Cloud className="w-3.5 h-3.5" /> Google Drive Cloud Storage
+                            <Cloud className="w-3.5 h-3.5" /> Cloud CDN Storage
                           </>
                         ) : (
                           'External Web Link'
@@ -323,14 +335,14 @@ export const ResumeTab: React.FC<ResumeTabProps> = ({ token, onToast }) => {
             </Card>
           </div>
 
-          {/* Right Column: Upload to Google Drive / Custom Link */}
+          {/* Right Column: Upload to Cloud CDN / Custom Link */}
           <div className="lg:col-span-6 space-y-6">
-            {/* Upload to Google Drive */}
+            {/* Upload to Cloud CDN */}
             <Card className="p-6 space-y-4">
               <div className="flex items-center gap-2 border-b border-surface-border pb-3">
                 <Cloud className="w-4 h-4 text-accent" />
                 <h2 className="text-base font-bold text-foreground">
-                  Upload PDF to Google Drive
+                  Upload PDF to Cloud Storage
                 </h2>
               </div>
 
@@ -370,7 +382,7 @@ export const ResumeTab: React.FC<ResumeTabProps> = ({ token, onToast }) => {
                   <div className="space-y-2 py-4 flex flex-col items-center">
                     <RefreshCw className="w-8 h-8 text-accent animate-spin" />
                     <p className="text-xs font-mono text-accent font-semibold">
-                      Uploading PDF directly to Google Drive...
+                      Uploading PDF directly to Cloud Storage...
                     </p>
                     <p className="text-[11px] text-foreground/50 font-mono">
                       Generating public reader CDN link and updating database
@@ -390,7 +402,7 @@ export const ResumeTab: React.FC<ResumeTabProps> = ({ token, onToast }) => {
                       </p>
                     </div>
                     <Badge variant="accent" className="mt-2 text-[10px]">
-                      ☁️ Direct Google Drive Cloud Sync
+                      ☁️ Direct Cloud CDN Sync
                     </Badge>
                   </div>
                 )}
