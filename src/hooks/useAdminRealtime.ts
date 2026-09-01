@@ -33,6 +33,24 @@ export function useAdminRealtime({
   const [lastActivity, setLastActivity] = useState<Date | null>(null);
   const channelRef = useRef<any>(null);
 
+  const callbacksRef = useRef({
+    onNewMessage,
+    onMessageUpdated,
+    onMessageDeleted,
+    onDataChanged,
+    onToast,
+  });
+
+  useEffect(() => {
+    callbacksRef.current = {
+      onNewMessage,
+      onMessageUpdated,
+      onMessageDeleted,
+      onDataChanged,
+      onToast,
+    };
+  });
+
   useEffect(() => {
     if (!enabled || typeof window === 'undefined') {
       setStatus('disconnected');
@@ -69,32 +87,32 @@ export function useAdminRealtime({
           playNotificationChime();
 
           // Show alert toast
-          onToast?.(
+          callbacksRef.current.onToast?.(
             `🔔 New inquiry received from ${newMessage.senderName || 'a visitor'}!`,
             'success'
           );
 
-          onNewMessage?.(newMessage);
+          callbacksRef.current.onNewMessage?.(newMessage);
           window.dispatchEvent(
             new CustomEvent('ba_realtime_message_insert', { detail: newMessage })
           );
         } else if (payload.eventType === 'UPDATE') {
           const updatedMessage = payload.new;
-          onMessageUpdated?.(updatedMessage);
+          callbacksRef.current.onMessageUpdated?.(updatedMessage);
           window.dispatchEvent(
             new CustomEvent('ba_realtime_message_update', { detail: updatedMessage })
           );
         } else if (payload.eventType === 'DELETE') {
           const deletedId = payload.old?.id;
           if (deletedId) {
-            onMessageDeleted?.(deletedId);
+            callbacksRef.current.onMessageDeleted?.(deletedId);
             window.dispatchEvent(
               new CustomEvent('ba_realtime_message_delete', { detail: { id: deletedId } })
             );
           }
         }
 
-        onDataChanged?.('ContactMessage', payload.eventType);
+        callbacksRef.current.onDataChanged?.('ContactMessage', payload.eventType);
         window.dispatchEvent(new CustomEvent('ba_realtime_refresh_stats'));
       }
     );
@@ -105,7 +123,7 @@ export function useAdminRealtime({
       { event: '*', schema: 'public', table: 'Project' },
       (payload: any) => {
         setLastActivity(new Date());
-        onDataChanged?.('Project', payload.eventType);
+        callbacksRef.current.onDataChanged?.('Project', payload.eventType);
         window.dispatchEvent(new CustomEvent('ba_realtime_refresh_stats'));
         window.dispatchEvent(new CustomEvent('ba_realtime_projects_changed'));
       }
@@ -127,7 +145,7 @@ export function useAdminRealtime({
         { event: '*', schema: 'public', table },
         (payload: any) => {
           setLastActivity(new Date());
-          onDataChanged?.(table, payload.eventType);
+          callbacksRef.current.onDataChanged?.(table, payload.eventType);
           window.dispatchEvent(new CustomEvent('ba_realtime_refresh_stats'));
           window.dispatchEvent(new CustomEvent(`ba_realtime_${table.toLowerCase()}_changed`));
         }
