@@ -63,6 +63,14 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  icons: {
+    icon: [
+      { url: '/images/burnafaavicon.jpeg' },
+      { url: '/icon.jpeg' },
+    ],
+    shortcut: '/images/burnafaavicon.jpeg',
+    apple: '/images/burnafaavicon.jpeg',
+  },
 };
 
 export default function RootLayout({

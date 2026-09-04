@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Lock,
   ShieldCheck,
@@ -270,7 +271,16 @@ export default function AdminPage() {
           >
             <Menu className="w-5 h-5" />
           </button>
-          <span className="font-bold text-sm">BA Operations</span>
+          <div className="flex items-center gap-2">
+            <Image
+              src="/images/burnafaavicon.jpeg"
+              alt="Boniventure Agbor"
+              width={24}
+              height={24}
+              className="w-6 h-6 rounded-md object-cover"
+            />
+            <span className="font-bold text-sm">Operations</span>
+          </div>
           <div className="w-5" />
         </header>
 

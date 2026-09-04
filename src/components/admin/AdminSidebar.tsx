@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   LayoutDashboard,
   User,
@@ -88,9 +89,13 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
         {/* Sidebar Header */}
         <div className="p-5 border-b border-surface-border flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500 text-white font-bold font-mono text-sm flex items-center justify-center shadow-md shadow-purple-500/20">
-              BA
-            </div>
+            <Image
+              src="/images/burnafaavicon.jpeg"
+              alt="Boniventure Agbor"
+              width={36}
+              height={36}
+              className="w-9 h-9 rounded-xl object-cover shadow-md shadow-blue-500/20"
+            />
             <div>
               <h2 className="font-bold text-sm text-foreground tracking-tight leading-none">
                 Admin Operations

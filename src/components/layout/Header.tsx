@@ -10,6 +10,7 @@ import dynamic from 'next/dynamic';
 import { useTranslation } from '@/i18n/context';
 import { Navbar } from './Navbar';
 import { Button } from '../ui/Button';
+import Image from 'next/image';
 import { ThemeToggle } from '../ui/ThemeToggle';
 import { LanguageToggle } from '../ui/LanguageToggle';
 
@@ -54,11 +55,16 @@ export const Header: React.FC<HeaderProps> = ({
     >
       <div className="max-w-6xl mx-auto px-4 md:px-8 flex items-center justify-between">
         {/* Brand Logo */}
-        <a href="#hero" className="flex items-center gap-2 font-mono font-bold text-lg text-foreground hover:text-accent transition-colors">
-          <span className="w-8 h-8 rounded-lg bg-accent text-white flex items-center justify-center font-bold text-sm shadow-sm">
-            BA
-          </span>
-          <span>Boniventure</span>
+        <a href="#hero" className="flex items-center gap-2.5 font-mono font-bold text-lg text-foreground hover:text-accent transition-colors group">
+          <Image
+            src="/images/logoname.jpeg"
+            alt="Boniventure Agbor"
+            width={32}
+            height={32}
+            className="w-full h-9 rounded-lg object-cover shadow-sm group-hover:scale-105 transition-transform"
+            priority
+          />
+          {/* <span>Boniventure</span> */}
         </a>
 
         {/* Desktop Navbar */}
