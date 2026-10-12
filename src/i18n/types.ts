@@ -1,9 +1,12 @@
+import { PricingDictionary } from '@/types/pricing';
+
 export type Locale = 'en' | 'fr';
 
 export interface TranslationDictionary {
   nav: {
     home: string;
     about: string;
+    pricing: string;
     projects: string;
     experience: string;
     skills: string;
@@ -40,6 +43,7 @@ export interface TranslationDictionary {
     copyEmail: string;
     emailCopied: string;
     principlesTitle: string;
+    downloadCv: string;
     philosophy: Array<{
       title: string;
       description: string;
@@ -74,6 +78,7 @@ export interface TranslationDictionary {
     subtitle: string;
     rolePrefix: string;
     currentRole: string;
+    keyMilestones: string;
   };
   skills: {
     badge: string;
@@ -84,6 +89,11 @@ export interface TranslationDictionary {
       handsOn: string;
       architecture: string;
     };
+    tracks: {
+      frontend: string;
+      backend: string;
+      devops: string;
+    };
     carousel: {
       autoRotating: string;
       pausedHover: string;
@@ -93,6 +103,38 @@ export interface TranslationDictionary {
       play: string;
     };
   };
+  marketing: {
+    badge: string;
+    title: string;
+    subtitle: string;
+    servicePrefix: string;
+    skillsCountLabel: {
+      singular: string;
+      plural: string;
+    };
+    cards: Array<{
+      id: string;
+      title: string;
+      badge: string;
+      description: string;
+      groups: Array<{
+        title: string;
+        skills: string[];
+      }>;
+    }>;
+    bridge: {
+      engineeringBadge: string;
+      digitalGrowthBadge: string;
+      headline: string;
+      description: string;
+      ctaText: string;
+    };
+  };
+  modal: {
+    headerEyebrow: string;
+    close: string;
+  };
+  pricing: PricingDictionary;
   contact: {
     badge: string;
     title: string;

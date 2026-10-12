@@ -1,10 +1,17 @@
 import { TranslationDictionary } from '../types';
 import { PERSONAL_DATA } from '@/data/personalData';
+import {
+  MARKETING_SERVICES_INTRO,
+  MARKETING_SERVICES_DATA,
+  MARKETING_BRIDGE_DATA,
+} from '@/data/marketingServicesData';
+import { DEFAULT_PRICING_DICTIONARY } from '@/data/pricingData';
 
 export const en: TranslationDictionary = {
   nav: {
     home: 'Home',
     about: 'About',
+    pricing: 'Pricing',
     projects: 'Projects',
     experience: 'Experience',
     skills: 'Skills',
@@ -49,6 +56,7 @@ export const en: TranslationDictionary = {
     copyEmail: 'Copy Email',
     emailCopied: 'Email Copied!',
     principlesTitle: 'Core Engineering Principles',
+    downloadCv: 'Download my CV.',
     philosophy: PERSONAL_DATA.philosophy,
   },
   projects: {
@@ -80,6 +88,7 @@ export const en: TranslationDictionary = {
     subtitle: 'Scroll down to progressively reveal engineering leadership, production milestones, and career impact.',
     rolePrefix: 'Role #0',
     currentRole: 'Current Role',
+    keyMilestones: 'Key Milestones & Impact',
   },
   skills: {
     badge: 'Technical Inventory',
@@ -90,6 +99,11 @@ export const en: TranslationDictionary = {
       handsOn: 'Hands-on Experience',
       architecture: 'Architecture / Explored',
     },
+    tracks: {
+      frontend: 'Frontend & UI Engineering',
+      backend: 'Backend, Database & AI Systems',
+      devops: 'DevOps, Cloud & Mobile Ecosystem',
+    },
     carousel: {
       autoRotating: 'Auto-Rotating Stack',
       pausedHover: 'Paused on Hover',
@@ -99,6 +113,29 @@ export const en: TranslationDictionary = {
       play: 'Resume Auto-Play',
     },
   },
+  marketing: {
+    badge: MARKETING_SERVICES_INTRO.badge,
+    title: MARKETING_SERVICES_INTRO.title,
+    subtitle: MARKETING_SERVICES_INTRO.subtitle,
+    servicePrefix: 'Service 0',
+    skillsCountLabel: {
+      singular: 'skill',
+      plural: 'skills',
+    },
+    cards: MARKETING_SERVICES_DATA,
+    bridge: {
+      engineeringBadge: 'Engineering',
+      digitalGrowthBadge: 'Digital Growth',
+      headline: MARKETING_BRIDGE_DATA.headline,
+      description: MARKETING_BRIDGE_DATA.description,
+      ctaText: MARKETING_BRIDGE_DATA.ctaText,
+    },
+  },
+  modal: {
+    headerEyebrow: 'Case Study & Technical Deep-Dive',
+    close: 'Close',
+  },
+  pricing: DEFAULT_PRICING_DICTIONARY,
   contact: {
     badge: "Let's Connect",
     title: 'Start a Conversation',

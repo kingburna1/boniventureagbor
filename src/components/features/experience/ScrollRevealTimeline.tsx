@@ -289,6 +289,7 @@ export const ScrollRevealTimeline: React.FC<ScrollRevealTimelineProps> = ({ item
                   index={index}
                   rolePrefix={dictionary.experience.rolePrefix}
                   currentRoleLabel={dictionary.experience.currentRole}
+                  keyMilestonesLabel={dictionary.experience.keyMilestones}
                 />
               </div>
             ))}
@@ -310,6 +311,7 @@ export const ScrollRevealTimeline: React.FC<ScrollRevealTimelineProps> = ({ item
                 index={index}
                 rolePrefix={dictionary.experience.rolePrefix}
                 currentRoleLabel={dictionary.experience.currentRole}
+                keyMilestonesLabel={dictionary.experience.keyMilestones}
               />
             </div>
           ))}
@@ -324,6 +326,7 @@ interface ExperienceCardContentProps {
   index: number;
   rolePrefix: string;
   currentRoleLabel: string;
+  keyMilestonesLabel?: string;
 }
 
 const ExperienceCardContent: React.FC<ExperienceCardContentProps> = ({
@@ -331,6 +334,7 @@ const ExperienceCardContent: React.FC<ExperienceCardContentProps> = ({
   index,
   rolePrefix,
   currentRoleLabel,
+  keyMilestonesLabel,
 }) => {
   return (
     <Card className="relative overflow-hidden border border-surface-border bg-surface/90 backdrop-blur-xl shadow-lg hover:border-accent/50 transition-colors duration-300 p-5 md:p-6 lg:p-7">
@@ -375,7 +379,7 @@ const ExperienceCardContent: React.FC<ExperienceCardContentProps> = ({
       {/* Key Measurable Highlights */}
       <div className="space-y-1.5 mb-3.5">
         <h4 className="text-xs font-mono font-semibold text-foreground/70 uppercase tracking-wider mb-1.5">
-          Key Milestones & Impact
+          {keyMilestonesLabel || 'Key Milestones & Impact'}
         </h4>
         <div className="space-y-1.5">
           {item.highlights.map((highlight, hIndex) => (

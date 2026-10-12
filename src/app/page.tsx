@@ -2,9 +2,11 @@ import dynamic from 'next/dynamic';
 import { Header } from '@/components/layout/Header';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { AboutSection } from '@/components/sections/AboutSection';
+import { PricingSection } from '@/components/sections/PricingSection';
 import { ProjectsSection } from '@/components/sections/ProjectsSection';
 import { ExperienceSection } from '@/components/sections/ExperienceSection';
 import { SkillsSection } from '@/components/sections/SkillsSection';
+import { MarketingServicesSection } from '@/components/sections/MarketingServicesSection';
 import { ContactSection } from '@/components/sections/ContactSection';
 import { Footer } from '@/components/layout/Footer';
 import { MouseSpotlight } from '@/components/ui/MouseSpotlight';
@@ -47,10 +49,12 @@ export default async function Home() {
       {/* Main Single Page Sections */}
       <main className="relative z-10">
         <HeroSection profile={profile} />
-        <AboutSection profile={profile} />
+        <AboutSection profile={profile} avatarUrl={profile.avatarUrl} />
+        <PricingSection />
         <ProjectsSection projects={projects} />
         <ExperienceSection items={experience} />
         <SkillsSection categories={skills} />
+        <MarketingServicesSection />
         <ContactSection profile={profile} />
       </main>
 

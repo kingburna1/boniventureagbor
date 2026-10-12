@@ -14,18 +14,21 @@ import { PERSONAL_DATA } from '@/data/personalData';
 
 export interface AboutSectionProps {
   profile?: PersonalProfileData;
+  avatarUrl?: string;
 }
 
 export const AboutSection: React.FC<AboutSectionProps> = ({
   profile = PERSONAL_DATA,
+  avatarUrl,
 }) => {
   const icons = [Lightbulb, ShieldCheck, Layers, Bot];
   const shouldReduceMotion = useReducedMotion();
-  const { dictionary } = useTranslation();
+  const { dictionary, locale } = useTranslation();
 
-  const philosophyItems = profile?.philosophy?.length
-    ? profile.philosophy
-    : dictionary.about.philosophy;
+  const isFrench = locale === 'fr';
+  const philosophyItems = isFrench
+    ? dictionary.about.philosophy
+    : (profile?.philosophy?.length ? profile.philosophy : dictionary.about.philosophy);
 
   return (
     <section id="about" className="py-7 px-4 md:px-8 bg-surface/20">
@@ -37,7 +40,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
         />
 
         {/* Senior Designer Profile Narrative & Photo Sub-Section */}
-        <AboutProfileCard profile={profile} />
+        <AboutProfileCard profile={profile} avatarUrl={avatarUrl || profile?.avatarUrl} />
 
         {/* Philosophy Grid */}
         <div className="space-y-6">

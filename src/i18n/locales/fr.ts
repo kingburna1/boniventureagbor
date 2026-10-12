@@ -4,6 +4,7 @@ export const fr: TranslationDictionary = {
   nav: {
     home: 'Accueil',
     about: 'À Propos',
+    pricing: 'Tarifs',
     projects: 'Projets',
     experience: 'Expérience',
     skills: 'Compétences',
@@ -52,6 +53,7 @@ export const fr: TranslationDictionary = {
     copyEmail: "Copier l'Email",
     emailCopied: 'Email Copié !',
     principlesTitle: "Principes Fondamentaux d'Ingénierie",
+    downloadCv: 'Télécharger mon CV.',
     philosophy: [
       {
         title: 'Architecture Axée sur la Valeur',
@@ -96,6 +98,7 @@ export const fr: TranslationDictionary = {
     subtitle: 'Faites défiler vers le bas pour révéler progressivement le leadership technique, les étapes de production et l’impact généré.',
     rolePrefix: 'Poste #0',
     currentRole: 'Poste Actuel',
+    keyMilestones: 'Étapes Clés & Impact',
   },
   skills: {
     badge: 'Inventaire Technique',
@@ -106,6 +109,11 @@ export const fr: TranslationDictionary = {
       handsOn: 'Expérience Pratique',
       architecture: 'Architecture / Exploré',
     },
+    tracks: {
+      frontend: 'Frontend & Ingénierie UI',
+      backend: 'Backend, Bases de Données & Systèmes IA',
+      devops: 'DevOps, Cloud & Écosystème Mobile',
+    },
     carousel: {
       autoRotating: 'Défilement Automatique',
       pausedHover: 'En Pause au Survol',
@@ -113,6 +121,342 @@ export const fr: TranslationDictionary = {
       nextCategory: 'Catégorie Suivante',
       pause: 'Mettre en pause',
       play: 'Reprendre la rotation',
+    },
+  },
+  marketing: {
+    badge: 'Croissance & Visibilité',
+    title: 'Services de Marketing Numérique',
+    subtitle:
+      'J’aide les entreprises à développer leur présence en ligne, toucher la bonne audience, attirer des clients potentiels et convertir leur visibilité numérique en croissance mesurable. De la stratégie marketing et création de contenu au référencement naturel et à la génération de leads, je combine expertise technique et vision marketing pour propulser votre entreprise sur le web.',
+    servicePrefix: 'Service 0',
+    skillsCountLabel: {
+      singular: 'compétence',
+      plural: 'compétences',
+    },
+    cards: [
+      {
+        id: 'strategy-growth',
+        title: 'Stratégie Marketing Numérique & Croissance',
+        badge: 'Stratégie & Direction',
+        description:
+          'Bâtissez une stratégie marketing claire qui connecte votre entreprise avec la bonne audience, renforce votre présence en ligne et crée des opportunités de croissance durable.',
+        groups: [
+          {
+            title: 'Stratégie & Planification de Marché',
+            skills: [
+              'Stratégie Marketing Numérique',
+              'Planification Marketing Digital',
+              'Positionnement de Marque',
+              'Développement de Marque en Ligne',
+            ],
+          },
+          {
+            title: 'Recherche & Analyse d’Audience',
+            skills: [
+              'Étude de Marché',
+              'Recherche d’Audience & Segmentation Clients',
+              'Analyse Concurrentielle',
+              'Élaboration de Personas Clients',
+            ],
+          },
+          {
+            title: 'Tunnel de Vente & Acquisition Clients',
+            skills: [
+              'Cartographie du Parcours Client Digital',
+              'Conception de Tunnels de Vente',
+              'Stratégie d’Acquisition Clients',
+              'Stratégie de Génération de Leads',
+            ],
+          },
+          {
+            title: 'Optimisation & Métriques de Croissance',
+            skills: [
+              'Optimisation du Taux de Conversion (CRO)',
+              'Planification de Campagnes Marketing',
+              'Analyse de Performance des Campagnes',
+              'Reporting & Analytique Marketing',
+              'Growth Marketing',
+              'Stratégie de Rétention Clients',
+            ],
+          },
+        ],
+      },
+      {
+        id: 'content-social',
+        title: 'Marketing de Contenu & Gestion des Réseaux Sociaux',
+        badge: 'Contenu & Engagement',
+        description:
+          'Créez du contenu pertinent, tissez des liens solides avec votre audience et transformez les réseaux sociaux en leviers de notoriété, d’engagement et d’opportunités commerciales.',
+        groups: [
+          {
+            title: 'Stratégie & Gestion des Réseaux Sociaux',
+            skills: [
+              'Stratégie Social Media',
+              'Gestion de Comptes Réseaux Sociaux',
+              'Optimisation de Pages Entreprise',
+              'Stratégie de Croissance Sociale',
+              'Marketing Réseaux Sociaux Organique',
+              'Analyse de Performance Sociale',
+            ],
+          },
+          {
+            title: 'Stratégie & Création de Contenu',
+            skills: [
+              'Stratégie de Marketing de Contenu',
+              'Planning Éditorial & Calendriers',
+              'Création de Contenus pour Réseaux Sociaux',
+              'Copywriting & Rédaction Social Media',
+              'Accroches & Légendes Captivantes',
+              'Storytelling de Marque',
+              'Recyclage & Déclinaison de Contenu',
+              'Planification de Vidéos Courtes',
+            ],
+          },
+          {
+            title: 'Engagement d’Audience & Canaux',
+            skills: [
+              'Community Management',
+              'Engagement d’Audience',
+              'Personal Branding',
+              'Marketing TikTok',
+              'Marketing Facebook',
+              'Marketing Instagram',
+              'Marketing LinkedIn',
+              'Marketing X (Twitter)',
+              'Marketing WhatsApp Business',
+              'Optimisation & Gestion Google Business Profile',
+            ],
+          },
+          {
+            title: 'Stratégie Éditoriale & Contenu Web',
+            skills: [
+              'Planification d’Articles de Blog',
+              'Stratégie de Contenu de Site Web',
+              'Contenu Pédagogique & Promotionnel',
+              'Stratégie de Distribution de Contenu',
+              'Optimisation des Appels à l’Action (CTA)',
+            ],
+          },
+        ],
+      },
+      {
+        id: 'seo-visibility',
+        title: 'SEO, Visibilité en Ligne & Génération de Leads',
+        badge: 'Visibilité & Conversions',
+        description:
+          'Améliorez la visibilité de votre entreprise, consolidez sa réputation en ligne et permettez à vos clients potentiels de vous trouver, d’avoir confiance en votre marque et de passer à l’action.',
+        groups: [
+          {
+            title: 'Référencement Naturel (SEO)',
+            skills: [
+              'SEO On-Page',
+              'Fondamentaux du SEO Technique',
+              'Recherche de Mots-Clés',
+              'Analyse de l’Intention de Recherche',
+              'Optimisation SEO de Contenu',
+              'Optimisation Balises Meta Titres & Descriptions',
+              'Stratégie de Maillage Interne',
+              'SEO d’Images',
+              'Audits de Structure & d’Indexabilité Web',
+              'Suivi des Performances de Recherche',
+            ],
+          },
+          {
+            title: 'SEO Local & Présence en Ligne',
+            skills: [
+              'Stratégie de SEO Local',
+              'Configuration & Optimisation Google Business Profile',
+              'Actualités & Contenus Google Business Profile',
+              'Optimisation de Visibilité Locale',
+              'Cohérence des Informations d’Entreprise (NAP)',
+              'Suivi des Positions en Recherche Locale',
+            ],
+          },
+          {
+            title: 'Génération de Leads & Conversion',
+            skills: [
+              'Planification de Campagnes de Leads',
+              'Optimisation de Pages de Destination (Landing Pages)',
+              'Stratégie de Capture de Leads',
+              'Optimisation des Appels à l’Action (CTA)',
+              'Optimisation du Taux de Conversion de Site',
+              'Stratégie de Nurturing de Leads',
+              'Campagnes d’Email Marketing',
+              'Croissance de Listes d’Emails',
+              'Copywriting d’Emails',
+              'Planification d’Automatisations Marketing',
+              'Configuration WhatsApp Business',
+              'Stratégie Relation Client sur WhatsApp',
+            ],
+          },
+          {
+            title: 'Publicité Payante & Marketing à la Performance',
+            skills: [
+              'Stratégie de Publicité Payante',
+              'Planification de Campagnes Meta Ads',
+              'Publicité Facebook & Instagram',
+              'Fondamentaux Google Ads',
+              'Ciblage d’Audience Publicitaire',
+              'Suivi de Performance des Campagnes',
+              'Optimisation de Budget Publicitaire',
+              'Analyse du Retour sur Investissement Publicitaire (ROAS)',
+            ],
+          },
+        ],
+      },
+    ],
+    bridge: {
+      engineeringBadge: 'Ingénierie',
+      digitalGrowthBadge: 'Croissance Digitale',
+      headline: 'Bien plus que de la visibilité. Une approche complète de croissance digitale.',
+      description:
+        'De la conception technique de votre site web à l’optimisation de sa découvrabilité, la stratégie de contenu et la génération de prospects qualifiés, j’allie développement web et marketing numérique pour bâtir une présence en ligne pérenne.',
+      ctaText: 'Développons Votre Entreprise',
+    },
+  },
+  modal: {
+    headerEyebrow: 'Étude de Cas & Architecture Technique',
+    close: 'Fermer',
+  },
+  pricing: {
+    badge: 'Investissements & Forfaits',
+    title: 'Tarifs & Forfaits',
+    subtitle:
+      'Que vous ayez besoin d’un site web professionnel, d’une présence digitale renforcée ou d’une solution logicielle sur mesure, je propose des formules flexibles adaptées à vos objectifs. Choisissez un forfait ou échangeons pour une solution sur mesure.',
+    deliveryLabel: 'Délai estimé',
+    includesLabel: 'Ce qui est inclus',
+    exclusionsLabel: 'Non inclus dans le forfait mensuel (devis séparé)',
+    plans: [
+      {
+        id: 'digital-launch',
+        name: 'Digital Launch',
+        positioning: 'Pour startups et petites entreprises lançant leur présence en ligne.',
+        price: '150 000',
+        currency: 'FCFA',
+        billing: 'Tarif projet forfaitaire',
+        description:
+          'Posez les bases numériques essentielles dont votre entreprise a besoin pour afficher une image professionnelle et faciliter la prise de contact de vos clients.',
+        deliverables: [
+          'Page d’atterrissage (landing page) ou site vitrine responsive jusqu’à 3 pages',
+          'Conception et développement mobile-first',
+          'Intégration d’un formulaire de contact sécurisé',
+          'Intégration du bouton WhatsApp pour contact direct en un clic',
+          'Liens vers vos réseaux sociaux professionnels',
+          'Configuration SEO on-page fondamentale',
+          'Contrôles de vitesse et d’optimisation des performances',
+          'Intégration Google Analytics lorsque pertinent',
+          'Une session structurée de révisions',
+        ],
+        deliveryEstimate: '5 à 10 jours ouvrés',
+        ctaText: 'Commencer',
+        prefillMessage: 'Je suis intéressé par le forfait Digital Launch.',
+      },
+      {
+        id: 'business-growth',
+        name: 'Business Growth',
+        badge: 'Recommandé',
+        isRecommended: true,
+        positioning: 'Pour entreprises en croissance ayant besoin d’un site plus complet et d’une visibilité structurée.',
+        price: '350 000',
+        currency: 'FCFA',
+        billing: 'Tarif projet forfaitaire',
+        description:
+          'Associez développement web professionnel et fondations marketing indispensables pour propulser durablement votre présence commerciale.',
+        deliverables: [
+          'Site internet d’entreprise complet jusqu’à 5 pages',
+          'Conception sur mesure fidèle à l’identité de votre marque',
+          'Mise en page réactive pour mobile, tablette et ordinateur',
+          'Formulaires de contact et intégration directe WhatsApp',
+          'Optimisation SEO technique et on-page avancée',
+          'Configuration Google Analytics et suivi des conversions',
+          'Création ou optimisation de votre fiche Google Business Profile',
+          'Stratégie de contenu fondamentale pour réseaux sociaux',
+          'Calendrier éditorial de 30 jours pour réseaux sociaux',
+          'Deux sessions structurées de révisions',
+        ],
+        deliveryEstimate: '10 à 20 jours ouvrés',
+        ctaText: 'Choisir Business Growth',
+        prefillMessage: 'Je suis intéressé par le forfait Business Growth.',
+      },
+      {
+        id: 'growth-partner',
+        name: 'Growth Partner',
+        positioning: 'Pour les entreprises recherchant un accompagnement marketing continu et régulier.',
+        price: '100 000',
+        currency: 'FCFA',
+        billing: 'Par mois',
+        billingPeriod: '/ mois',
+        description:
+          'Maintenez une présence active avec des publications régulières, une planification stratégique et un bilan de performance mensuel.',
+        deliverables: [
+          'Planification stratégique de marketing digital',
+          'Gestion d’une plateforme de réseau social convenue',
+          'Jusqu’à 8 publications de contenu par mois',
+          'Rédaction de contenus engageants & appels à l’action ciblés',
+          'Calendrier éditorial mensuel',
+          'Animation de communauté et modération sur horaires convenus',
+          'Mises à jour régulières de Google Business Profile',
+          'Rapport d’analyse mensuel des performances marketing',
+          'Une réunion mensuelle de revue stratégique',
+        ],
+        deliveryEstimate: 'Accompagnement mensuel continu',
+        ctaText: 'Discuter du Suivi Mensuel',
+        prefillMessage: 'Je souhaite échanger au sujet de l’accompagnement marketing mensuel.',
+        exclusions: [
+          'Développement web complet ou refonte de site',
+          'Production vidéo lourde & budgets publicitaires (ad spend)',
+          'Campagnes SEO avancées ou révisions illimitées',
+          'Plateformes de réseaux sociaux supplémentaires',
+        ],
+      },
+    ],
+    customProjects: {
+      badge: 'Solutions Sur Mesure',
+      heading: 'Un Besoin Spécifique ou Plus Complexe ?',
+      description:
+        'De l’application web sur mesure aux architectures backend en passant par les plateformes e-commerce et applications mobiles, je vous accompagne dans la conception d’une solution adaptée à vos exigences techniques et commerciales.',
+      services: [
+        'Développement d’applications web full-stack',
+        'Ingénierie backend et logique métier',
+        'Conception et intégration d’APIs REST',
+        'Modélisation et optimisation de bases de données',
+        'Authentification sécurisée et gestion des rôles',
+        'Développement e-commerce et boutiques en ligne',
+        'Développement d’applications mobiles',
+        'Intégration d’APIs et services tiers',
+        'Automatisation de flux et interconnexion de systèmes',
+        'Maintenance technique et optimisations de performance',
+        'Campagnes avancées de SEO et marketing numérique',
+      ],
+      pricingLabel: 'Sur devis personnalisé',
+      supportingText:
+        'Le tarif s’établit en fonction du périmètre fonctionnel, de la complexité technique, des intégrations requises et des délais de livraison.',
+      ctaText: 'Discuter de Votre Projet',
+      prefillMessage:
+        'Je souhaite échanger au sujet d’un projet logiciel ou marketing sur mesure.',
+    },
+    paymentTerms: {
+      badge: 'Modalités de Collaboration',
+      heading: 'Conditions de Paiement & Cadre de Travail',
+      depositTerm: {
+        title: 'Projets au Forfait',
+        description:
+          'Acompte de 50 % avant le démarrage des travaux, solde de 50 % à la livraison finale et validation des étapes.',
+      },
+      customMilestonesTerm: {
+        title: 'Projets Complexes & Sur Mesure',
+        description:
+          'Paiements échelonnés par jalons clairement définis et validés dans la proposition technique.',
+      },
+      monthlySupportTerm: {
+        title: 'Accompagnement Mensuel',
+        description:
+          'Facturation et règlement en début de chaque cycle mensuel d’accompagnement.',
+      },
+      scopeNote:
+        'Tout projet démarre après validation conjointe du périmètre, des livrables, du calendrier et des modalités financières. Toute demande hors périmètre convenu fera l’objet d’un avenant chiffré.',
+      transparencyNote:
+        'Le tarif final dépend du périmètre validé. Les frais tiers (noms de domaine, hébergement, budgets publicitaires, abonnements SaaS tiers) sont facturés séparément le cas échéant.',
     },
   },
   contact: {

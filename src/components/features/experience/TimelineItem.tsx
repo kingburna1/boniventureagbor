@@ -4,6 +4,7 @@ import React from 'react';
 import { Calendar, MapPin, CheckCircle2 } from 'lucide-react';
 import { ExperienceItem } from '@/types/experience';
 import { Badge } from '@/components/ui/Badge';
+import { useTranslation } from '@/i18n/context';
 
 export interface TimelineItemProps {
   item: ExperienceItem;
@@ -11,6 +12,7 @@ export interface TimelineItemProps {
 }
 
 export const TimelineItem: React.FC<TimelineItemProps> = ({ item, isLast = false }) => {
+  const { dictionary } = useTranslation();
   return (
     <div className="relative pl-8 md:pl-10 pb-12 group">
       {/* Vertical Line */}
@@ -44,7 +46,7 @@ export const TimelineItem: React.FC<TimelineItemProps> = ({ item, isLast = false
               <MapPin className="w-3.5 h-3.5" />
               {item.location}
             </span>
-            {item.isCurrent && <Badge variant="success">Current Role</Badge>}
+            {item.isCurrent && <Badge variant="success">{dictionary.experience.currentRole}</Badge>}
           </div>
         </div>
 

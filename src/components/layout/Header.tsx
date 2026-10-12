@@ -38,6 +38,7 @@ export const Header: React.FC<HeaderProps> = ({
     let label = item.label;
     if (item.id === 'hero') label = dictionary.nav.home;
     else if (item.id === 'about') label = dictionary.nav.about;
+    else if (item.id === 'pricing') label = dictionary.nav.pricing;
     else if (item.id === 'projects') label = dictionary.nav.projects;
     else if (item.id === 'experience') label = dictionary.nav.experience;
     else if (item.id === 'skills') label = dictionary.nav.skills;

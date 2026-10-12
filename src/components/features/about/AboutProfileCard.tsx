@@ -14,33 +14,35 @@ import { PersonalProfileData } from '@/types/personal';
 
 export interface AboutProfileCardProps {
   profile?: PersonalProfileData;
+  avatarUrl?: string;
 }
 
 export const AboutProfileCard: React.FC<AboutProfileCardProps> = ({
   profile = PERSONAL_DATA,
+  avatarUrl: propAvatarUrl,
 }) => {
   const shouldReduceMotion = useReducedMotion();
   const { dictionary, locale } = useTranslation();
 
-  const avatarUrl = profile?.avatarUrl || PERSONAL_DATA.avatarUrl;
+  const isFrench = locale === 'fr';
+  const avatarUrl = propAvatarUrl || profile?.avatarUrl || PERSONAL_DATA.avatarUrl;
   const resumeUrl = profile?.resumeUrl || PERSONAL_DATA.resumeUrl;
   const name = profile?.name || PERSONAL_DATA.name;
   const email = profile?.email || PERSONAL_DATA.email;
-  const location = profile?.location || dictionary.about.location;
-  const leadParagraph = profile?.aboutMe?.leadParagraph || dictionary.about.leadParagraph;
-  const bodyParagraph = profile?.aboutMe?.bodyParagraph || dictionary.about.bodyParagraph;
-  const highlights =
-    profile?.aboutMe?.highlights?.length > 0
-      ? profile.aboutMe.highlights
-      : dictionary.about.highlights;
+  const location = isFrench ? dictionary.about.location : (profile?.location || dictionary.about.location);
+  const leadParagraph = isFrench ? dictionary.about.leadParagraph : (profile?.aboutMe?.leadParagraph || dictionary.about.leadParagraph);
+  const bodyParagraph = isFrench ? dictionary.about.bodyParagraph : (profile?.aboutMe?.bodyParagraph || dictionary.about.bodyParagraph);
+  const highlights = isFrench
+    ? dictionary.about.highlights
+    : (profile?.aboutMe?.highlights?.length > 0 ? profile.aboutMe.highlights : dictionary.about.highlights);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-16">
       {/* Left Column: Senior Developer Profile Image Frame */}
       <motion.div
-        initial={shouldReduceMotion ? undefined : { opacity: 0.2, y: 24 }}
+        initial={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
         whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-40px' }}
+        viewport={{ once: true }}
         transition={{ duration: 0.7, ease: EASE_CINEMATIC }}
         className="lg:col-span-5 flex justify-center"
       >
@@ -118,7 +120,7 @@ export const AboutProfileCard: React.FC<AboutProfileCardProps> = ({
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 text-2xl sm:text-3xl md:text-4xl font-bold text-lime-500 dark:text-[#bef264] hover:text-lime-600 dark:hover:text-[#d9f99d] underline underline-offset-8 decoration-[3px] decoration-lime-500 dark:decoration-[#bef264] transition-all group"
           >
-            <span>{locale === 'fr' ? 'Télécharger mon CV.' : 'Download my CV.'}</span>
+            <span>{dictionary.about.downloadCv}</span>
             <span className="inline-block w-2.5 h-2.5 rounded-full bg-foreground/80 group-hover:scale-125 transition-transform" />
           </a>
         </motion.div>

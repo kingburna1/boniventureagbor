@@ -32,7 +32,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const heroRef = useRef<HTMLElement>(null);
   const leftColRef = useRef<HTMLDivElement>(null);
   const rightColRef = useRef<HTMLDivElement>(null);
-  const { dictionary } = useTranslation();
+  const { dictionary, locale } = useTranslation();
+  const isFrench = locale === 'fr';
+  const availability = isFrench ? dictionary.hero.availability : (profile?.availability || dictionary.hero.availability);
+  const bio = isFrench ? dictionary.hero.bio : (profile?.bio || dictionary.hero.bio);
 
   // GSAP Scroll-Linked scrubbed hero exit transition
   useEffect(() => {
@@ -112,7 +115,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
               </span>
-              <Badge variant="accent">{profile?.availability || dictionary.hero.availability}</Badge>
+              <Badge variant="accent">{availability}</Badge>
             </motion.div>
 
             {/* 2. Primary Headline with Masked Line-Level Reveal */}
@@ -150,7 +153,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               variants={fadeUp}
               className="text-base md:text-lg text-foreground/75 max-w-xl leading-relaxed mx-auto md:mx-0 font-normal"
             >
-              {profile?.bio || dictionary.hero.bio}
+              {bio}
             </motion.p>
 
             {/* 4. Action CTA Buttons with Restrained Micro-Interactions */}
@@ -192,11 +195,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
         {/* Right Column: Hero Visual Asset */}
         <div ref={rightColRef} className="lg:col-span-5 flex justify-center">
-          <HeroCarousel
-            avatarUrl={profile?.avatarUrl}
-            name={profile?.name}
-            title={profile?.title}
-          />
+          <HeroCarousel />
         </div>
       </div>
     </section>

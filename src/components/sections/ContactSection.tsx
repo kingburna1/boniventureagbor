@@ -22,11 +22,12 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
   profile = PERSONAL_DATA,
 }) => {
   const shouldReduceMotion = useReducedMotion();
-  const { dictionary } = useTranslation();
+  const { dictionary, locale } = useTranslation();
+  const isFrench = locale === 'fr';
 
   const email = profile?.email || PERSONAL_DATA.email;
-  const location = profile?.location || dictionary.about.location;
-  const availability = profile?.availability || dictionary.hero.availability;
+  const location = isFrench ? dictionary.about.location : (profile?.location || dictionary.about.location);
+  const availability = isFrench ? dictionary.hero.availability : (profile?.availability || dictionary.hero.availability);
   const socials = profile?.socials || PERSONAL_DATA.socials;
 
   return (

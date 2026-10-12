@@ -5,7 +5,7 @@ export const PERSONAL_DATA = {
   availability: "Available for Senior Roles & High-Impact Opportunities",
   location: "Douala, Cameroon",
   email: "agborboniventure@gmail.com",
-  avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+  avatarUrl: "https://hpjsdzugcoyyzwbiaitl.supabase.co/storage/v1/object/public/portfolio-media/1788211738013-Gemini_Generated_Image_dac2didac2didac2.jpeg",
   resumeUrl: "#",
   aboutMe: {
     leadParagraph: "I'm Boniventure Agbor — a full stack developer who ships exceptional digital products. From React interfaces to scalable backends, I build experiences that are beautiful, fast, and production-ready.",

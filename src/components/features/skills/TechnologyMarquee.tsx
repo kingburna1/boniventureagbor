@@ -6,6 +6,7 @@ import { Skill, SkillCategory } from '@/types/skill';
 import { MarqueeItem } from './MarqueeItem';
 import { scrollEngine } from '@/lib/scrollEngine';
 import { useReducedMotion } from 'framer-motion';
+import { useTranslation } from '@/i18n/context';
 
 export interface TechnologyMarqueeProps {
   categories: SkillCategory[];
@@ -127,6 +128,7 @@ const MarqueeTrack: React.FC<MarqueeTrackProps> = ({
 
 export const TechnologyMarquee: React.FC<TechnologyMarqueeProps> = ({ categories }) => {
   const shouldReduceMotion = useReducedMotion();
+  const { dictionary } = useTranslation();
 
   // Distribute skills across 3 curated multi-discipline tracks
   const track1Skills = useMemo(() => {
@@ -169,7 +171,7 @@ export const TechnologyMarquee: React.FC<TechnologyMarqueeProps> = ({ categories
     <div className="space-y-8 w-full">
       {/* Track 1: Frontend & Creative UI Engineering (Left flow, calm 82s duration) */}
       <MarqueeTrack
-        label="Frontend & UI Engineering"
+        label={dictionary.skills.tracks.frontend}
         skills={track1Skills}
         direction="left"
         baseDuration={82}
@@ -177,7 +179,7 @@ export const TechnologyMarquee: React.FC<TechnologyMarqueeProps> = ({ categories
 
       {/* Track 2: Backend, Database & AI/ML Architecture (Right flow, calm 94s duration) */}
       <MarqueeTrack
-        label="Backend, Database & AI Systems"
+        label={dictionary.skills.tracks.backend}
         skills={track2Skills}
         direction="right"
         baseDuration={94}
@@ -185,7 +187,7 @@ export const TechnologyMarquee: React.FC<TechnologyMarqueeProps> = ({ categories
 
       {/* Track 3: DevOps, Cloud, Mobile & Integrations (Left flow, calm 86s duration) */}
       <MarqueeTrack
-        label="DevOps, Cloud & Mobile Ecosystem"
+        label={dictionary.skills.tracks.devops}
         skills={track3Skills}
         direction="left"
         baseDuration={86}

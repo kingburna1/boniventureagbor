@@ -29,54 +29,35 @@ const DEFAULT_CAROUSEL_IMAGES: CarouselImage[] = [
     url: 'https://weassemble.team/wp-content/uploads/2022/06/Rectangle-33-6.png',
     alt: 'High Performance Cloud Computing',
     caption: 'Scalable Systems',
+    
   },
 ];
 
 
 
 export interface HeroCarouselProps {
-  avatarUrl?: string;
-  name?: string;
-  title?: string;
   images?: CarouselImage[];
   intervalMs?: number;
 }
 
 export const HeroCarousel: React.FC<HeroCarouselProps> = ({
-  avatarUrl,
-  name,
-  title,
   images = DEFAULT_CAROUSEL_IMAGES,
   intervalMs = 4000,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const shouldReduceMotion = useReducedMotion();
 
-  // Prepend personal profile avatar as slide 1 if provided
-  const displayImages: CarouselImage[] = React.useMemo(() => {
-    if (!avatarUrl) return images;
-    return [
-      {
-        id: 'profile-avatar',
-        url: avatarUrl,
-        alt: `${name || 'Boniventure Agbor'} — ${title || 'Full Stack Engineer'}`,
-        caption: title || 'Full-Stack Engineer',
-      },
-      ...images,
-    ];
-  }, [avatarUrl, images, name, title]);
-
   useEffect(() => {
-    if (shouldReduceMotion || displayImages.length <= 1) return;
+    if (shouldReduceMotion || images.length <= 1) return;
 
     const timer = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % displayImages.length);
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
     }, intervalMs);
 
     return () => clearInterval(timer);
-  }, [displayImages.length, intervalMs, shouldReduceMotion]);
+  }, [images.length, intervalMs, shouldReduceMotion]);
 
-  const activeImage = displayImages[currentIndex] || displayImages[0];
+  const activeImage = images[currentIndex] || images[0];
 
   return (
     <motion.div
@@ -157,7 +138,7 @@ export const HeroCarousel: React.FC<HeroCarouselProps> = ({
 
         {/* Slide Indicators */}
         <div className="absolute bottom-3 right-4 z-20 flex items-center gap-1.5">
-          {displayImages.map((img, idx) => (
+          {images.map((img, idx) => (
             <button
               key={img.id}
               onClick={(e) => {

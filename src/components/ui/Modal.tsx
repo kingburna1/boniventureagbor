@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { EASE_CINEMATIC } from '@/lib/motion';
+import { useTranslation } from '@/i18n/context';
 
 export interface ModalProps {
   isOpen: boolean;
@@ -20,6 +21,7 @@ export const Modal: React.FC<ModalProps> = ({
 }) => {
   const shouldReduceMotion = useReducedMotion();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const { dictionary } = useTranslation();
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -87,7 +89,7 @@ export const Modal: React.FC<ModalProps> = ({
             <div className="sticky top-0 bg-surface/95 backdrop-blur-xl border-b border-surface-border px-5 sm:px-7 py-4 flex items-center justify-between gap-4 z-20 shrink-0">
               <div className="flex-1 min-w-0">
                 <span className="text-[11px] font-mono uppercase text-accent font-semibold tracking-wider block mb-0.5">
-                  Case Study &amp; Technical Deep-Dive
+                  {dictionary.modal.headerEyebrow}
                 </span>
                 <h3 className="text-base sm:text-lg md:text-xl font-bold text-foreground truncate tracking-tight">
                   {title}
@@ -98,9 +100,9 @@ export const Modal: React.FC<ModalProps> = ({
                 ref={closeButtonRef}
                 onClick={onClose}
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-border/60 hover:bg-surface-border text-foreground hover:text-accent border border-surface-border text-xs font-mono font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-accent shadow-sm shrink-0 group cursor-pointer"
-                aria-label="Close dialog"
+                aria-label={dictionary.modal.close}
               >
-                <span>Close</span>
+                <span>{dictionary.modal.close}</span>
                 <span className="hidden sm:inline-block px-1.5 py-0.5 rounded bg-background/90 text-[10px] text-foreground/60 border border-surface-border/60 font-mono">
                   ESC
                 </span>

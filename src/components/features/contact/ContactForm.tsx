@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Send, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import { ContactFormData, ContactFormState } from '@/types/contact';
@@ -18,6 +18,22 @@ export const ContactForm: React.FC = () => {
     subject: '',
     message: '',
   });
+
+  useEffect(() => {
+    const handlePrefill = (event: Event) => {
+      const customEvent = event as CustomEvent<{ subject?: string; message?: string }>;
+      if (customEvent.detail) {
+        setFormData((prev) => ({
+          ...prev,
+          ...(customEvent.detail.subject ? { subject: customEvent.detail.subject } : {}),
+          ...(customEvent.detail.message ? { message: customEvent.detail.message } : {}),
+        }));
+      }
+    };
+
+    window.addEventListener('prefill-contact', handlePrefill);
+    return () => window.removeEventListener('prefill-contact', handlePrefill);
+  }, []);
 
   const [formState, setFormState] = useState<ContactFormState>({
     status: 'idle',
